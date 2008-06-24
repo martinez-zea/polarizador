@@ -15,68 +15,68 @@ class imprimeTicket():
 
         imp = """ &%FW0 
 
-              .Mms:.                        
-              .Ms:smdo-                     
-        -hhhhhhhhhdMo   .+hmy/                 
-              .Mo       -odds:             
-              .Mo         ./mMdhhhhhhhhhhhh-
-              .Mo      -+hms/              
-        NNhhhhhhhhMo   /ymh+.                  
-        Ny       .Mhodds:                      
-        Ny        hy/                         
-        Ny                                     
-        y+                                     
+             .Mms:.                        
+             .Ms:smdo-                     
+   -hhhhhhhhhdMo   .+hmy/                 
+             .Mo       -odds:             
+             .Mo         ./mMdhhhhhhhhhhhh-
+             .Mo      -+hms/              
+    NNhhhhhhhhMo   /ymh+.                  
+    Ny       .Mhodds:                      
+    Ny        hy/                         
+    Ny                                     
+    y+                                     
 
-        &%FW1 
-        El   POLARIZADOR 
+   &%FW1 
+   El   POLARIZADOR 
 
-        TRANSFORMA SUS FLUJOS
-        DE OPINION EN UN 
-        UNICO ESTADO POLAR
+   TRANSFORMA SUS FLUJOS
+   DE OPINION EN UN 
+   UNICO ESTADO POLAR
 
-        &%FW0  
-        &%F1
-        --------------------------------------------
-        Corro sobre:
+   &%FW0  
+   &%F1
+   --------------------------------------------
+   Corro sobre:
 
-        Ubuntu Gutsy GNU/Linux 7.10
-        Python 2.5.1
-        MySQL 5.0.45
-        eSpeak 1.29
-        Arduino Diecimilia
-        --------------------------------------------
-
-
-        Tiquete numero:"""+ticketNum+""" 
-
-        """+tiempoStr+"""
+   Ubuntu Gutsy GNU/Linux 7.10
+   Python 2.5.1
+   MySQL 5.0.45
+   eSpeak 1.29
+   Arduino Diecimilia
+   --------------------------------------------
 
 
+   Tiquete numero:"""+ticketNum+""" 
 
-        ********************************************
-        ********************************************
-        *					   *
-        * Codigo			           *
-        *					   *
-        * Respuesta				   *
-        *					   *
-        *					   *
-        *					   *
-        * Ud. Piensa lo contrario que yo	   *
-        *					   *
-        ********************************************
-        ********************************************
-        &%FW1
+   """+tiempoStr+"""
 
-        Recuerde que usted 
-        SOLO puede estar
-        en PRO o en CONTRA
-        de mi opinion 
-        &%FW0 
-        http://nerdbots.info/polarizador
 
-        &%VT 
-        &%FC
+
+   ********************************************
+   ********************************************
+   *					   *
+   * Codigo			           *
+   *					   *
+   * Respuesta				   *
+   *					   *
+   *					   *
+   *					   *
+   * Ud. Piensa lo contrario que yo	   *
+   *					   *
+   ********************************************
+   ********************************************
+   &%FW1
+
+   Recuerde que usted 
+   SOLO puede estar
+   en PRO o en CONTRA
+   de mi opinion 
+   &%FW0 
+   http://nerdbots.info/polarizador
+
+   &%VT 
+   &%FC
 
         """
         salida = open('/tmp/salida.txt','w')
