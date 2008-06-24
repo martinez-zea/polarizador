@@ -36,6 +36,7 @@ import serial
 import sys
 import time
 
+import imprimeTicket
 quienId = 0
 
 
@@ -134,11 +135,7 @@ def polariza():
 				guardaRespuesta(codigo, "si")
 				buscaRespuesta("no")
 				print str(buscaPares("si"))
-				imp = "\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Usted, el visitante numero" + codigo + "\n  esta de acuerdo con " + str(buscaPares("si"))+  " de los visitantes "
-				salida = open('salida.txt','w')
-				salida.write(imp)	
-				salida.close()
-				os.system('cat salida.txt | lpr')
+				imprimeTicket()
 				break
 
 			if bots == 3:
