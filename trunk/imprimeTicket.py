@@ -6,7 +6,7 @@ import datetime
 
 class imprimeTicket():
     def __init__(self):
-        self.imprimeTicket()
+        #self.imprimeTicket()
         Num = 1
         ticketNum = str(Num)
 
