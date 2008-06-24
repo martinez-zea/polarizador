@@ -125,7 +125,7 @@ def polariza():
 			time.sleep(0.5)
 			habla("espeak", "-ves", "-s 135",  "Presione un boton, para contestar la pregunta")
 			#habla("espeak", "-ves", "respondio que .")	
-			botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)	
+			botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)
 			bots = int(botones.readline())
 			botones.close() 
 		
@@ -136,6 +136,7 @@ def polariza():
 				guardaRespuesta(codigo, "si")
 				buscaRespuesta("no")
 				print str(buscaPares("si"))
+				habla("espeak", "-ves", "-s 135",  "Imprimiendo")
 				imprime = imprimeTicket.imprimeTicket(codigo,"SI",str(buscaPares("si")),"de acuerdo")
 				break
 
@@ -144,6 +145,7 @@ def polariza():
 				guardaRespuesta(codigo, "no")
 				buscaRespuesta("si")
 				print str(buscaPares("no"))
+				habla("espeak", "-ves", "-s 135",  "Imprimiendo")
 				imprime = imprimeTicket.imprimeTicket(codigo,"NO",str(buscaPares("no")),"en desacuerdo")
 				break
 		#	print bots

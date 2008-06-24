@@ -29,7 +29,7 @@ su sensacion de seguridad?
     y+                                     
 
 &%FW1 
-    El   POLARIZADOR 
+   El   POLARIZADOR 
 
 TRANSFORMA SUS FLUJOS
 DE OPINION EN UN 
