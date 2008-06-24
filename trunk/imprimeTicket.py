@@ -84,4 +84,4 @@ http://nerdbots.info/polarizador
 		salida = open('/tmp/salida.txt','w')
 		salida.write(imp)	
 		salida.close()
-		#os.system('cat /tmp/salida.txt > /dev/lp0')
+		os.system('cat /tmp/salida.txt > /dev/lp0')
