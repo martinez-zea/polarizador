@@ -111,6 +111,7 @@ def buscaPares(que):
 ################################################################################ Funcion Principal
 def polariza():
 	while 1:
+        imprime = imprimeTicket()
 		print 'Este es el polarizador'
 
 		lector = serial.Serial('/dev/ttyUSB1', 9600, timeout=None)
@@ -135,7 +136,7 @@ def polariza():
 				guardaRespuesta(codigo, "si")
 				buscaRespuesta("no")
 				print str(buscaPares("si"))
-				imprimeTicket()
+				imprime
 				break
 
 			if bots == 3:

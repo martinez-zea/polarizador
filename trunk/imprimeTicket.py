@@ -4,8 +4,8 @@
 import os
 import datetime
 
-class ticket():
-    def imprimeTicket():
+class imprimeTicket():
+    def __init__(self):
         Num = 1
         ticketNum = str(Num)
 
