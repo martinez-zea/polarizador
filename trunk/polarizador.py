@@ -136,7 +136,7 @@ def polariza():
 				guardaRespuesta(codigo, "si")
 				buscaRespuesta("no")
 				print str(buscaPares("si"))
-				imprime = imprimeTicket.imprimeTicket(codigo,"SI",str(buscaPares("si")))
+				imprime = imprimeTicket.imprimeTicket(codigo,"SI",str(buscaPares("si")),"de acuerdo")
 				break
 
 			if bots == 3:
@@ -144,7 +144,7 @@ def polariza():
 				guardaRespuesta(codigo, "no")
 				buscaRespuesta("si")
 				print str(buscaPares("no"))
-				imprime = imprimeTicket.imprimeTicket(codigo,"NO",str(buscaPares("no")))
+				imprime = imprimeTicket.imprimeTicket(codigo,"NO",str(buscaPares("no")),"en desacuerdo")
 				break
 		#	print bots
 

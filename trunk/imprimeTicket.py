@@ -5,7 +5,7 @@ import os
 import datetime
 
 class imprimeTicket:
-    def __init__(self,codigo,respuesta,cuantos):
+    def __init__(self,codigo,respuesta,cuantos,acuerdo):
         #self.imprimeTicket()
 		cualPregunta = """
 La conciencia de ser observado acrecenta 
@@ -64,7 +64,7 @@ Usted respondio: """+respuesta+"""
 Usted esta deacuerdo con """+cuantos+"""
 de los visitantes
 
-Usted esta en desacuerdo con migo
+Usted esta """+acuerdo+""" con migo
 
 ********************************************
 ********************************************
