@@ -127,8 +127,7 @@ def polariza():
             #habla("espeak", "-ves", "respondio que .")	
             botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)	
             bots = int(botones.readline())
-            botones.close() 
-        
+            botones.close()         
 
             if bots == 2:
                 print "boton 2 presionado por ", codigo
