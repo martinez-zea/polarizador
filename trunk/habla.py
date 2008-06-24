@@ -5,11 +5,11 @@ import os
 import sys
 
 class habla:
-	def __init__(self,*args):
+	def que(self,*args):
 		"""Interactua con espeak, espera recibir algo como habla("que va a decir") """
 		pid = os.fork()
 		if not pid:
 			os.execvp("espeak", ("espeak", "-ves") +  args)
-			os.wait()[0]
+		return os.wait()[0]
     	
 

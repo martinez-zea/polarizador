@@ -39,6 +39,8 @@ import time
 import imprimeTicket
 import habla
 
+h = habla.habla()
+
 quienId = 0
 
 
@@ -79,10 +81,10 @@ def cantaRespuesta1():
 	row2 = cursor2.fetchone() ##mete el resultado en fetch one
 	print "ID: ", row2[0], "quien: ", row2[1], "resp: ", row2[2]
 	
-	h=habla.habla("El visistante, numero.")
-	h=habla.habla(str(row2[1]))
-	h=habla.habla("respondio que .")			
-	h=habla.habla(row2[2])	
+	h.que("El visistante, numero.")
+	h.que(str(row2[1]))
+	h.que("respondio que .")			
+	h.que(row2[2])	
 	
 def buscaRespuesta(que):
 	db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="panoptico") ##conexion a la bd
@@ -90,8 +92,8 @@ def buscaRespuesta(que):
 	cursor1.execute("SELECT quien, respuesta  FROM responde WHERE respuesta = %s ORDER BY rand()" ,(que)) ##busca el ultimo registro	
 	row1 = cursor1.fetchone() ##mete el resultado en fetch one
 	print row1[0], row1[1]
-	h=habla.habla("Uste respondio lo contrario al visitante numero")
-	h1=habla.habla(str(row1[0]))
+	h.que("Uste respondio lo contrario al visitante numero")
+	h.que(str(row1[0]))
 	#h=habla.habla("espeak", "-ves",  "-s 135", row1[1])
 
 def buscaPares(que):
@@ -116,7 +118,7 @@ def polariza():
 		print codigo
 		while len(codigo) > 0:
 			time.sleep(0.5)
-			h=habla.habla("Presione un boton, para contestar la pregunta")
+			h.que("Presione un boton, para contestar la pregunta")
 			#h=habla.habla("respondio que .")	
 			botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)
 			bots = int(botones.readline())
@@ -129,7 +131,7 @@ def polariza():
 				guardaRespuesta(codigo, "si")
 				buscaRespuesta("no")
 				print str(buscaPares("si"))
-				h1=habla.habla("Imprimiendo")
+				h.que("Imprimiendo")
 				imprime = imprimeTicket.imprimeTicket(codigo,"SI",str(buscaPares("si")),"de acuerdo")
 				break
 
@@ -138,7 +140,7 @@ def polariza():
 				guardaRespuesta(codigo, "no")
 				buscaRespuesta("si")
 				print str(buscaPares("no"))
-				h2=habla.habla("Imprimiendo")
+				h.que("Imprimiendo")
 				imprime = imprimeTicket.imprimeTicket(codigo,"NO",str(buscaPares("no")),"en desacuerdo")
 				break
 		#	print bots
