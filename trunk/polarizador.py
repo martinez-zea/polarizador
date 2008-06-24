@@ -110,8 +110,8 @@ def buscaPares(que):
 
 ################################################################################ Funcion Principal
 def polariza():
-	while 1:
-        imprime = imprimeTicket()
+    imprime = imprimeTicket()
+    while 1:
 		print 'Este es el polarizador'
 
 		lector = serial.Serial('/dev/ttyUSB1', 9600, timeout=None)
