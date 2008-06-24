@@ -110,7 +110,7 @@ def buscaPares(que):
 
 ################################################################################ Funcion Principal
 def polariza():
-    imprime = imprimeTicket()
+    imprime = imprimeTicket.imprimeTicket()
     while 1:
 		print 'Este es el polarizador'
 
