@@ -1,80 +1,84 @@
-#import os
-#import datetime
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
-def imprimeTicket():
-    Num = 1
-    ticketNum = str(Num)
+import os
+import datetime
 
-    tiempo = datetime.datetime.now()
-    tiempoStr = tiempo.strftime("Fecha: %Y-%m-%d   Hora: %H:%M:%S")
+class ticket():
+    def imprimeTicket():
+        Num = 1
+        ticketNum = str(Num)
 
-    imp = """ &%FW0 
+        tiempo = datetime.datetime.now()
+        tiempoStr = tiempo.strftime("Fecha: %Y-%m-%d   Hora: %H:%M:%S")
 
-          .Mms:.                        
-          .Ms:smdo-                     
-    -hhhhhhhhhdMo   .+hmy/                 
-          .Mo       -odds:             
-          .Mo         ./mMdhhhhhhhhhhhh-
-          .Mo      -+hms/              
-    NNhhhhhhhhMo   /ymh+.                  
-    Ny       .Mhodds:                      
-    Ny        hy/                         
-    Ny                                     
-    y+                                     
+        imp = """ &%FW0 
 
-    &%FW1 
-    El   POLARIZADOR 
+              .Mms:.                        
+              .Ms:smdo-                     
+        -hhhhhhhhhdMo   .+hmy/                 
+              .Mo       -odds:             
+              .Mo         ./mMdhhhhhhhhhhhh-
+              .Mo      -+hms/              
+        NNhhhhhhhhMo   /ymh+.                  
+        Ny       .Mhodds:                      
+        Ny        hy/                         
+        Ny                                     
+        y+                                     
 
-    TRANSFORMA SUS FLUJOS
-    DE OPINION EN UN 
-    UNICO ESTADO POLAR
+        &%FW1 
+        El   POLARIZADOR 
 
-    &%FW0  
-    &%F1
-    --------------------------------------------
-    Corro sobre:
+        TRANSFORMA SUS FLUJOS
+        DE OPINION EN UN 
+        UNICO ESTADO POLAR
 
-    Ubuntu Gutsy GNU/Linux 7.10
-    Python 2.5.1
-    MySQL 5.0.45
-    eSpeak 1.29
-    Arduino Diecimilia
-    --------------------------------------------
+        &%FW0  
+        &%F1
+        --------------------------------------------
+        Corro sobre:
 
-
-    Tiquete numero:"""+ticketNum+""" 
-
-    """+tiempoStr+"""
-
+        Ubuntu Gutsy GNU/Linux 7.10
+        Python 2.5.1
+        MySQL 5.0.45
+        eSpeak 1.29
+        Arduino Diecimilia
+        --------------------------------------------
 
 
-    ********************************************
-    ********************************************
-    *					   *
-    * Codigo			           *
-    *					   *
-    * Respuesta				   *
-    *					   *
-    *					   *
-    *					   *
-    * Ud. Piensa lo contrario que yo	   *
-    *					   *
-    ********************************************
-    ********************************************
-    &%FW1
+        Tiquete numero:"""+ticketNum+""" 
 
-    Recuerde que usted 
-    SOLO puede estar
-    en PRO o en CONTRA
-    de mi opinion 
-    &%FW0 
-    http://nerdbots.info/polarizador
+        """+tiempoStr+"""
 
-    &%VT 
-    &%FC
 
-    """
-    salida = open('/tmp/salida.txt','w')
-    salida.write(imp)	
-    salida.close()
-    os.system('cat /tmp/salida.txt > /dev/lp0')
+
+        ********************************************
+        ********************************************
+        *					   *
+        * Codigo			           *
+        *					   *
+        * Respuesta				   *
+        *					   *
+        *					   *
+        *					   *
+        * Ud. Piensa lo contrario que yo	   *
+        *					   *
+        ********************************************
+        ********************************************
+        &%FW1
+
+        Recuerde que usted 
+        SOLO puede estar
+        en PRO o en CONTRA
+        de mi opinion 
+        &%FW0 
+        http://nerdbots.info/polarizador
+
+        &%VT 
+        &%FC
+
+        """
+        salida = open('/tmp/salida.txt','w')
+        salida.write(imp)	
+        salida.close()
+        os.system('cat /tmp/salida.txt > /dev/lp0')
