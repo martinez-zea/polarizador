@@ -64,7 +64,7 @@ Usted respondio: """+respuesta+"""
 Usted esta deacuerdo con """+cuantos+"""
 de los visitantes
 
-Usted esta """+acuerdo+""" con migo
+Usted esta """+acuerdo+""" conmigo
 
 ********************************************
 ********************************************
