@@ -1,5 +1,34 @@
 #!/usr/bin/python
-# importa los modulos de python
+#          .Mms:.                        
+#          .Ms:smdo-                     
+#-hhhhhhhhhdMo   .+hmy/                 
+#          .Mo       -odds:             
+#          .Mo         ./mMdhhhhhhhhhhhh-
+#          .Mo      -+hms/              
+# NNhhhhhhhhMo   /ymh+.                  
+# Ny       .Mhodds:                      
+# Ny        hy/                         
+# Ny                                     
+# y+
+#http://nerdbots.info/polarizador
+#Camilo Martinez <cmart AT decoloector DOT net>
+#Gabriel Zea <zea AT randomlab DOT net>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License.
+
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+
 import MySQLdb 
 import os 
 import datetime
@@ -11,7 +40,7 @@ quienId = 0
 
 
 
-################################################################################ Habla con espeak
+## Habla con espeak
 def habla(program, *args):
 	"""Interactua con algun espeak espera recibir algo como habla("espeak","-ves","que va a decir") """
 	pid = os.fork()
@@ -19,7 +48,7 @@ def habla(program, *args):
      		os.execvp(program, (program,) +  args)
     	return os.wait()[0]
 
-################################################################################ Guarda el dato de quien llega y toma un id
+## Guarda el dato de quien llega y toma un id
 def guardaLlegada():
 	""" Guarda la hora de llegada de un visitante al tomar la tarjeta con el 
 	codigo de barras """
@@ -34,7 +63,7 @@ def guardaLlegada():
 	cursor.execute("INSERT INTO llega (quien,hora) VALUES (%s,%s)", (quienId,tiempoStr))
 	cursor.close()
 
-################################################################################ Guarda el dato de la respuesta en la bd
+## Guarda el dato de la respuesta en la bd
 def guardaRespuesta(quien, respuesta):
 
 		db = MySQLdb.connect(host="localhost", user="root", passwd="", db="panoptico")
@@ -92,7 +121,7 @@ def polariza():
 		print codigo
 		while len(codigo) > 0:
 			time.sleep(0.5)
-			habla("espeak", "-ves", "-s 135",  "Presione un boton")
+			habla("espeak", "-ves", "-s 135",  "Presione un boton, para contestar la pregunta")
 			#habla("espeak", "-ves", "respondio que .")	
 			botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)	
 			bots = int(botones.readline())
