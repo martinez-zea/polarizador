@@ -115,7 +115,6 @@ def polariza():
         print 'Este es el polarizador'
 
         lector = serial.Serial('/dev/ttyUSB1', 9600, timeout=None)
-
         codigo = str(lector.readline())
         #print codigo
         lector.close()
@@ -129,6 +128,21 @@ def polariza():
             bots = int(botones.readline())
             botones.close()         
 
+
+		print codigo
+	
+
+		print 'nada'
+
+		while len(codigo) > 0:
+			time.sleep(0.5)
+			habla("espeak", "-ves", "-s 135",  "Presione un boton, para contestar la pregunta")
+			#habla("espeak", "-ves", "respondio que .")	
+			botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)	
+			bots = int(botones.readline())
+			botones.close() 
+		
+
             if bots == 2:
                 print "boton 2 presionado por ", codigo
                 #cantaRespuesta1()
@@ -137,6 +151,7 @@ def polariza():
                 print str(buscaPares("si"))
                 imprime = imprimeTicket.imprimeTicket()
                 break
+
 
             if bots == 3:
                 print "boton 3 presionado por ", codigo
