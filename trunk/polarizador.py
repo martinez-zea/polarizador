@@ -40,6 +40,7 @@ import imprimeTicket
 import habla
 
 h = habla.habla()
+m = imprimeTicket.imprimeTicket()
 
 quienId = 0
 
@@ -132,7 +133,7 @@ def polariza():
 				buscaRespuesta("no")
 				print str(buscaPares("si"))
 				h.que("Imprimiendo")
-				imprime = imprimeTicket.imprimeTicket(codigo,"SI",str(buscaPares("si")),"de acuerdo")
+				m.imp(codigo,"SI",str(buscaPares("si")),"de acuerdo")
 				break
 
 			if bots == 3:
@@ -141,7 +142,7 @@ def polariza():
 				buscaRespuesta("si")
 				print str(buscaPares("no"))
 				h.que("Imprimiendo")
-				imprime = imprimeTicket.imprimeTicket(codigo,"NO",str(buscaPares("no")),"en desacuerdo")
+				m.imp(codigo,"NO",str(buscaPares("no")),"en desacuerdo")
 				break
 		#	print bots
 if __name__ == '__main__': polariza()

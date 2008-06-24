@@ -5,7 +5,7 @@ import os
 import datetime
 
 class imprimeTicket:
-    def __init__(self,codigo,respuesta,cuantos,acuerdo):
+    def imp(self,codigo,respuesta,cuantos,acuerdo):
         #self.imprimeTicket()
 		cualPregunta = """
 La conciencia de ser observado acrecenta 
