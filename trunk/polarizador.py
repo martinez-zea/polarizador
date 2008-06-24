@@ -36,7 +36,6 @@ import serial
 import sys
 import time
 
-import imprimeTicket
 quienId = 0
 
 
@@ -110,30 +109,16 @@ def buscaPares(que):
 
 ################################################################################ Funcion Principal
 def polariza():
-    while 1:
-        
-        print 'Este es el polarizador'
+	while 1:
+		print 'Este es el polarizador'
 
-        lector = serial.Serial('/dev/ttyUSB1', 9600, timeout=None)
-        codigo = str(lector.readline())
-        #print codigo
-        lector.close()
+		lector = serial.Serial('/dev/ttyUSB1', 9600, timeout=None)
 
-        print codigo
-        while len(codigo) > 0:
-            time.sleep(0.5)
-            habla("espeak", "-ves", "-s 135",  "Presione un boton, para contestar la pregunta")
-            #habla("espeak", "-ves", "respondio que .")	
-            botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)	
-            bots = int(botones.readline())
-            botones.close()         
-
+		codigo = str(lector.readline())
+		#print codigo
+		lector.close()
 
 		print codigo
-	
-
-		print 'nada'
-
 		while len(codigo) > 0:
 			time.sleep(0.5)
 			habla("espeak", "-ves", "-s 135",  "Presione un boton, para contestar la pregunta")
@@ -143,31 +128,34 @@ def polariza():
 			botones.close() 
 		
 
-            if bots == 2:
-                print "boton 2 presionado por ", codigo
-                #cantaRespuesta1()
-                guardaRespuesta(codigo, "si")
-                buscaRespuesta("no")
-                print str(buscaPares("si"))
-                imprime = imprimeTicket.imprimeTicket()
-                break
+			if bots == 2:
+				print "boton 2 presionado por ", codigo
+				#cantaRespuesta1()
+				guardaRespuesta(codigo, "si")
+				buscaRespuesta("no")
+				print str(buscaPares("si"))
+				imp = "\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Usted, el visitante numero" + codigo + "\n  esta de acuerdo con " + str(buscaPares("si"))+  " de los visitantes "
+				salida = open('salida.txt','w')
+				salida.write(imp)	
+				salida.close()
+				os.system('cat salida.txt | lpr')
+				break
 
+			if bots == 3:
+				print "boton 3 presionado por ", codigo
+				guardaRespuesta(codigo, "no")
+				buscaRespuesta("si")
+				print str(buscaPares("no"))
+					
+				imp = "\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Usted, el visitante numero" + codigo + "\n  esta de acuerdo con " + str(buscaPares("no"))+  " de los visitantes "
+				print imp
+				salida = open('salida.txt','w')
+				salida.write(imp)
+				salida.close()
+				os.system('cat salida.txt | lpr')
 
-            if bots == 3:
-                print "boton 3 presionado por ", codigo
-                guardaRespuesta(codigo, "no")
-                buscaRespuesta("si")
-                print str(buscaPares("no"))
-                    
-                imp = "\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Usted, el visitante numero" + codigo + "\n  esta de acuerdo con " + str(buscaPares("no"))+  " de los visitantes "
-                print imp
-                salida = open('salida.txt','w')
-                salida.write(imp)
-                salida.close()
-                os.system('cat salida.txt | lpr')
-
-                break
-        #	print bots
+				break
+		#	print bots
 
 
 
