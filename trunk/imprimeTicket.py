@@ -4,16 +4,17 @@
 import os
 import datetime
 
-class imprimeTicket():
-    def __init__(self):
+class imprimeTicket:
+    def __init__(self,codigo,respuesta,cuantos):
         #self.imprimeTicket()
-        Num = 1
-        ticketNum = str(Num)
+		cualPregunta = """
+La conciencia de ser observado acrecenta 
+su sensacion de seguridad?
+		"""		
+		tiempo = datetime.datetime.now()
+		tiempoStr = tiempo.strftime("Fecha: %Y-%m-%d   Hora: %H:%M:%S")
 
-        tiempo = datetime.datetime.now()
-        tiempoStr = tiempo.strftime("Fecha: %Y-%m-%d   Hora: %H:%M:%S")
-
-        imp = """ &%FW0 
+		imp = """ &%FW0 
 
              .Mms:.                        
              .Ms:smdo-                     
@@ -28,7 +29,7 @@ class imprimeTicket():
     y+                                     
 
 &%FW1 
-El   POLARIZADOR 
+    El   POLARIZADOR 
 
 TRANSFORMA SUS FLUJOS
 DE OPINION EN UN 
@@ -47,7 +48,7 @@ Arduino Diecimilia
 --------------------------------------------
 
 
-Tiquete numero:"""+ticketNum+""" 
+Tiquete numero:"""+codigo+""" 
 
 """+tiempoStr+"""
 
@@ -55,15 +56,16 @@ Tiquete numero:"""+ticketNum+"""
 
 ********************************************
 ********************************************
-*					   *
-* Codigo			           *
-*					   *
-* Respuesta				   *
-*					   *
-*					   *
-*					   *
-* Ud. Piensa lo contrario que yo	   *
-*					   *
+
+A la pregunta: """+cualPregunta+"""      
+Usted respondio: """+respuesta+"""
+
+
+Usted esta deacuerdo con """+cuantos+"""
+de los visitantes
+
+Usted esta en desacuerdo con migo
+
 ********************************************
 ********************************************
 &%FW1
@@ -79,7 +81,7 @@ http://nerdbots.info/polarizador
 &%FC
 
         """
-        salida = open('/tmp/salida.txt','w')
-        salida.write(imp)	
-        salida.close()
-        os.system('cat /tmp/salida.txt > /dev/lp0')
+		salida = open('/tmp/salida.txt','w')
+		salida.write(imp)	
+		salida.close()
+		#os.system('cat /tmp/salida.txt > /dev/lp0')

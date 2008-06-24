@@ -136,7 +136,7 @@ def polariza():
 				guardaRespuesta(codigo, "si")
 				buscaRespuesta("no")
 				print str(buscaPares("si"))
-				imprime = imprimeTicket.imprimeTicket()
+				imprime = imprimeTicket.imprimeTicket(codigo,"SI",str(buscaPares("si")))
 				break
 
 			if bots == 3:
@@ -144,14 +144,7 @@ def polariza():
 				guardaRespuesta(codigo, "no")
 				buscaRespuesta("si")
 				print str(buscaPares("no"))
-					
-				imp = "\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Usted, el visitante numero" + codigo + "\n  esta de acuerdo con " + str(buscaPares("no"))+  " de los visitantes "
-				print imp
-				salida = open('salida.txt','w')
-				salida.write(imp)
-				salida.close()
-				os.system('cat salida.txt | lpr')
-
+				imprime = imprimeTicket.imprimeTicket(codigo,"NO",str(buscaPares("no")))
 				break
 		#	print bots
 
