@@ -37,18 +37,11 @@ import sys
 import time
 
 import imprimeTicket
+import habla
 
 quienId = 0
 
 
-
-## Habla con espeak
-def habla(program, *args):
-	"""Interactua con algun espeak espera recibir algo como habla("espeak","-ves","que va a decir") """
-	pid = os.fork()
-    	if not pid:
-     		os.execvp(program, (program,) +  args)
-    	return os.wait()[0]
 
 ## Guarda el dato de quien llega y toma un id
 def guardaLlegada():
@@ -86,10 +79,10 @@ def cantaRespuesta1():
 	row2 = cursor2.fetchone() ##mete el resultado en fetch one
 	print "ID: ", row2[0], "quien: ", row2[1], "resp: ", row2[2]
 	
-	habla("espeak", "-ves", "El visistante, numero.")
-	habla("espeak", "-ves", str(row2[1]))
-	habla("espeak", "-ves", "respondio que .")			
-	habla("espeak", "-ves", row2[2])	
+	h=habla.habla("El visistante, numero.")
+	h=habla.habla(str(row2[1]))
+	h=habla.habla("respondio que .")			
+	h=habla.habla(row2[2])	
 	
 def buscaRespuesta(que):
 	db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="panoptico") ##conexion a la bd
@@ -97,9 +90,9 @@ def buscaRespuesta(que):
 	cursor1.execute("SELECT quien, respuesta  FROM responde WHERE respuesta = %s ORDER BY rand()" ,(que)) ##busca el ultimo registro	
 	row1 = cursor1.fetchone() ##mete el resultado en fetch one
 	print row1[0], row1[1]
-	habla("espeak", "-ves",  "-s 135", "Uste respondio lo contrario al visitante numero")
-	habla("espeak", "-ves", "-s 135",str(row1[0]))
-	#habla("espeak", "-ves",  "-s 135", row1[1])
+	h=habla.habla("Uste respondio lo contrario al visitante numero")
+	h=habla.habla(str(row1[0]))
+	#h=habla.habla("espeak", "-ves",  "-s 135", row1[1])
 
 def buscaPares(que):
 	db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="panoptico") ##conexion a la bd
@@ -123,8 +116,8 @@ def polariza():
 		print codigo
 		while len(codigo) > 0:
 			time.sleep(0.5)
-			habla("espeak", "-ves", "-s 135",  "Presione un boton, para contestar la pregunta")
-			#habla("espeak", "-ves", "respondio que .")	
+			h=habla.habla("Presione un boton, para contestar la pregunta")
+			#h=habla.habla("respondio que .")	
 			botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)
 			bots = int(botones.readline())
 			botones.close() 
@@ -136,7 +129,7 @@ def polariza():
 				guardaRespuesta(codigo, "si")
 				buscaRespuesta("no")
 				print str(buscaPares("si"))
-				habla("espeak", "-ves", "-s 135",  "Imprimiendo")
+				h=habla.habla("Imprimiendo")
 				imprime = imprimeTicket.imprimeTicket(codigo,"SI",str(buscaPares("si")),"de acuerdo")
 				break
 
@@ -145,13 +138,8 @@ def polariza():
 				guardaRespuesta(codigo, "no")
 				buscaRespuesta("si")
 				print str(buscaPares("no"))
-				habla("espeak", "-ves", "-s 135",  "Imprimiendo")
+				h=habla.habla("Imprimiendo")
 				imprime = imprimeTicket.imprimeTicket(codigo,"NO",str(buscaPares("no")),"en desacuerdo")
 				break
 		#	print bots
-
-
-
-			
-
 if __name__ == '__main__': polariza()
