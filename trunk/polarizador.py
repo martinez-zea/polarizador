@@ -91,7 +91,7 @@ def buscaRespuesta(que):
 	row1 = cursor1.fetchone() ##mete el resultado en fetch one
 	print row1[0], row1[1]
 	h=habla.habla("Uste respondio lo contrario al visitante numero")
-	h=habla.habla(str(row1[0]))
+	h1=habla.habla(str(row1[0]))
 	#h=habla.habla("espeak", "-ves",  "-s 135", row1[1])
 
 def buscaPares(que):
