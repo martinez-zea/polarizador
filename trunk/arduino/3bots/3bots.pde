@@ -10,6 +10,9 @@ int state1b = 0;
 int state2a = 0; 
 int state2b = 0;
 
+//comunicacion serial
+int mandaPython = 0;
+
 void setup(){
   //modos de los pines
   pinMode(pinBot1, INPUT);
@@ -18,18 +21,31 @@ void setup(){
   Serial.begin(9600);
   //inicial el lcd
   lcd.init();
-    lcd.clear();
- lcd.printIn("Hola");
-  lcd.cursorTo(2,0);
- lcd.printIn("El Polarizador");
+  escribeSaludo();
 }
 
-void loop(){
+//Funcion para escribir la pregnta en lcd
+void escribePregunta(){
+  lcd.leftScroll(20, 50);
+  lcd.printIn("Esta udted de acuerdo con");
+  lcd.cursorTo(2,0);
+  lcd.printIn("la seguridad.........");
+}
+
+//Escribe un saludo en el lcd
+void escribeSaludo(){
+  lcd.leftScroll(20, 50);
+  lcd.printIn("Hola");
+  lcd.cursorTo(2,0);
+  lcd.printIn("El Pola");
+}
+
+void leeBotones(){
   //lee el estado de los botones
   state1a = digitalRead(pinBot1);
   state2a = digitalRead(pinBot2);
   //Serial.println(state1a);
-  
+
   //logica para saber como estan los botones
   if (state1a == 0){
     if (state1b == 1){
@@ -42,7 +58,27 @@ void loop(){
     }
   }
   state1b = state1a;
-  state2b = state2a;
-  
-  
+  state2b = state2a; 
+}
+
+void loop(){
+  //control de acciones desde Python
+  if (Serial.available()>0){
+    mandaPython = Serial.read();
+
+    //1. lee y envia el dato de los botones
+    if (mandaPython == 1){
+      leeBotones(); 
+    }
+
+    //2. escribe la pregunta
+    if (mandaPython == 2)
+      escribePregunta();  
+  } 
+
+  //3. escribe el saludo 
+  if(mandaPython == 3){
+    escribeSaludo(); 
+  }
+
 }
