@@ -50,12 +50,12 @@ quienId = 0
 
 ################################################################################ Funcion Principal
 def polariza():
+botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)
+botones.write('3')
+botones.close
+
 	while 1:
 		print 'Este es el polarizador'
-		
-		botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)
-		botones.write('3')
-		botones.close
 
 		lector = serial.Serial('/dev/ttyUSB1', 9600, timeout=None)
 		codigo = str(lector.readline())
