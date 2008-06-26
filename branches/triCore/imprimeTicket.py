@@ -5,7 +5,7 @@ import os
 import datetime
 
 class imprimeTicket:
-    def imp(self,codigo,respuesta,cuantos,acuerdo):
+    def imp(self,codigo,respuesta,cuantos,acuerdo,veces):
         #self.imprimeTicket()
 		cualPregunta = """
 La conciencia de ser observado acrecenta 
@@ -52,6 +52,7 @@ Tiquete numero:"""+codigo+"""
 
 """+tiempoStr+"""
 
+Usted me ha visitado """+veces+"""veces
 
 
 ********************************************

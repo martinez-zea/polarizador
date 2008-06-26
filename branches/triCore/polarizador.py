@@ -94,7 +94,7 @@ def polariza():
 				p.buscaRespuesta("no")
 				print str(p.buscaPares("si"))
 				h.que("Imprimiendo")
-				m.imp(codigo,"SI",str(p.buscaPares("si")),"de acuerdo")
+				m.imp(codigo,"SI",str(p.buscaPares("si")),"de acuerdo",str(p.buscaAnteriores(int(codigo))))
 				break
 
 			if bots == 2:
@@ -103,7 +103,7 @@ def polariza():
 				p.buscaRespuesta("si")
 				print str(p.buscaPares("no"))
 				h.que("Imprimiendo")
-				m.imp(codigo,"NO",str(p.buscaPares("no")),"en desacuerdo")
+				m.imp(codigo,"NO",str(p.buscaPares("no")),"en desacuerdo",str(p.buscaAnteriores(int(codigo))))
 				break
 		#	print bots
 if __name__ == '__main__': polariza()
