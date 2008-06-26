@@ -106,6 +106,7 @@ void leeBotones(){
   }
   state1b = state1a;
   state2b = state2a; 
+  delay(100);
 }
 
 void loop(){
