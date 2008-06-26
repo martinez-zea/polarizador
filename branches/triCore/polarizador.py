@@ -42,6 +42,7 @@ import peticion
 
 h = habla.habla()
 m = imprimeTicket.imprimeTicket()
+p = peticion.peticion()
 
 quienId = 0
 
@@ -61,7 +62,8 @@ def polariza():
 		lector.close()
 		print 'Usted es el visitante numero: ', codigo
 		print 'Presione un boton para responder la pregunta'
-	
+
+		p.buscaAnteriores(codigo)			
 		
 		while len(codigo) > 0:
 			lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
@@ -72,7 +74,7 @@ def polariza():
 			h.que("Presione un boton, para contestar la pregunta")
 			bots = int(botones.readline())
 			botones.close() 
-			p = peticion.peticion()
+			
 			
 			lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
 			lcd.write('3')

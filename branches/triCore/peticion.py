@@ -45,6 +45,22 @@ class peticion:
 		h.que(str(row1[0]))
 		#habla("espeak", "-ves",  "-s 135", row1[1])
 
+	def buscaAnteriores(self,codigo):
+		db = MySQLdb.connect(host="localhost", user="root", passwd="", db="polarizador")
+		cursor = db.cursor()
+		cuantos = cursor.execute("SELECT quien  FROM responde WHERE quien = %s ", (codigo))
+		#print cuantos
+	
+		if cuantos == 0:
+			h.que("Esta es la primera vez que me visita")
+			print "esta es la primera vez"
+		
+		if cuantos > 0:
+			h.que("Usted me ha visitado")
+			h.que(str(cuantos))
+			h.que("veces")
+			print "usted se he registrado",cuantos,"veces"
+
 	def buscaPares(self, que):
 		db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="panoptico") ##conexion a la bd
 		cursor1 = db1.cursor() ##crea cursor
