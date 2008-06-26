@@ -65,7 +65,7 @@ def polariza():
 		print 'Usted es el visitante numero: ', codigo
 		print 'Presione un boton para responder la pregunta'
 
-		p.buscaAnteriores(int(codigo))			
+		anteriores = p.buscaAnteriores(int(codigo))			
 		
 		while len(codigo) > 0:
 			lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
@@ -94,7 +94,7 @@ def polariza():
 				p.buscaRespuesta("no")
 				print str(p.buscaPares("si"))
 				h.que("Imprimiendo")
-				m.imp(codigo,"SI",str(p.buscaPares("si")),"de acuerdo",str(p.buscaAnteriores(int(codigo))))
+				m.imp(codigo,"SI",str(p.buscaPares("si")),"de acuerdo",str(anteriores))
 				break
 
 			if bots == 2:
@@ -103,7 +103,7 @@ def polariza():
 				p.buscaRespuesta("si")
 				print str(p.buscaPares("no"))
 				h.que("Imprimiendo")
-				m.imp(codigo,"NO",str(p.buscaPares("no")),"en desacuerdo",str(p.buscaAnteriores(int(codigo))))
+				m.imp(codigo,"NO",str(p.buscaPares("no")),"en desacuerdo",str(anteriores))
 				break
 		#	print bots
 if __name__ == '__main__': polariza()

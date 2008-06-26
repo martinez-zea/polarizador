@@ -60,6 +60,7 @@ class peticion:
 			h.que(str(cuantos))
 			h.que("veces")
 			print "usted se he registrado",cuantos,"veces"
+		return cuantos
 
 	def buscaPares(self, que):
 		db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="polarizador") ##conexion a la bd
