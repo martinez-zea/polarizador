@@ -96,12 +96,12 @@ void leeBotones(){
   //logica para saber como estan los botones
   if (state1a == 0){
     if (state1b == 1){
-      Serial.println("bot1");
+      Serial.println("1");
     }
   }
   if (state2a == 0){
     if (state2b == 1){
-      Serial.println("bot2");
+      Serial.println("2");
     }
   }
   state1b = state1a;
@@ -113,15 +113,15 @@ void loop(){
   //control de acciones desde Python
  if (Serial.available()>0){
     mandaPython = Serial.read();
-    //Serial.println(mandaPython); 
+   // Serial.println(mandaPython); 
  }
     //2. escribe la pregunta
-    if (mandaPython == 2){    
+    if (mandaPython == 50){    
       escribePregunta();  
     } 
 
     //3. escribe el saludo 
-    if(mandaPython == 3){
+    if(mandaPython == 51){
       escribeSaludo(); 
     }
 
