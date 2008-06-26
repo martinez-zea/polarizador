@@ -35,6 +35,7 @@ import datetime
 import serial
 import sys
 import time
+import random as r
 
 import imprimeTicket
 import habla
@@ -44,18 +45,16 @@ h = habla.habla()
 m = imprimeTicket.imprimeTicket()
 p = peticion.peticion()
 
-quienId = 0
-
-
-
+quienId = 0		
 
 ################################################################################ Funcion Principal
 def polariza():
 	while 1:
+		h.que("Soy el Polarizador")
 		print 'Este es el polarizador'
 		lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
-		lcd.write('3')
-		print "escribi 3"
+		lcd.write('4')
+		print "escribi 4"
 		lcd.close()
 		print "cierro el serial"
 
@@ -68,8 +67,9 @@ def polariza():
 		anteriores = p.buscaAnteriores(int(codigo))			
 		
 		while len(codigo) > 0:
+			pregnum = str(r.randint(1,3))
 			lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
-			lcd.write('2')
+			lcd.write(pregnum)
 			lcd.close()
 			
 			botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)
@@ -79,31 +79,33 @@ def polariza():
 			
 			
 			lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
-			lcd.write('3')
+			lcd.write('4')
 			lcd.close()
 			
 			tiempo = datetime.datetime.now()
 			fecha = tiempo.strftime("%Y/%m/%d")
 			hora = tiempo.strftime("%H:%M:%S")
 			
-			if bots == 1:
+			if bots == 2:
 				print "boton 2 presionado por ", codigo
 				#cantaRespuesta1()
 				
-				p.guardaRespuesta(codigo,1, "si",hora,fecha)
+				p.guardaRespuesta(codigo,1,"si",hora,fecha)
 				p.buscaRespuesta("no")
 				print str(p.buscaPares("si"))
 				h.que("Imprimiendo")
-				m.imp(codigo,"SI",str(p.buscaPares("si")),"de acuerdo",str(anteriores))
+				m.imp(codigo,"SI",str(p.buscaPares("si")),"de acuerdo",str(anteriores), pregnum)
+				h.que("Gracias por usarme")
 				break
 
-			if bots == 2:
-				print "boton 3 presionado por ", codigo
+			if bots == 1:
+				print "boton 1 presionado por ", codigo
 				p.guardaRespuesta(codigo,1, "no",hora,fecha)
 				p.buscaRespuesta("si")
 				print str(p.buscaPares("no"))
 				h.que("Imprimiendo")
-				m.imp(codigo,"NO",str(p.buscaPares("no")),"en desacuerdo",str(anteriores))
+				m.imp(codigo,"NO",str(p.buscaPares("no")),"en desacuerdo",str(anteriores), pregnum)
+				h.que("Gracias por usarme")
 				break
 		#	print bots
 if __name__ == '__main__': polariza()

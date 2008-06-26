@@ -32,7 +32,27 @@ class peticion:
 	##############     PREGUNTAS A LA BD     #######################################
 	################################################################################
 
+	def buscaHora(self, quien):
+		db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="polarizador") ##conexion a la bd
+		cursor1 = db1.cursor() ##crea cursor
+		cursor1.execute("SELECT hora, quien  FROM responde WHERE quien = %s",(quien)) ##busca el ultimo registro	
+		row1 = cursor1.fetchone() ##mete el resultado en fetch one
+		print "la lista tiene ",len(row1), " elementos"		
+		for i in range(len(row1)):
 
+			print row1[i]
+		return str(row1[0])
+
+	def buscaFecha(self, quien):
+		db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="polarizador") ##conexion a la bd
+		cursor1 = db1.cursor() ##crea cursor
+		cursor1.execute("SELECT fecha, quien  FROM responde WHERE quien = %s",(quien)) ##busca el ultimo registro	
+		row1 = cursor1.fetchone() ##mete el resultado en fetch one
+		print "la lista tiene ",len(row1), " elementos"		
+		for i in range(len(row1)):
+
+			print row1[i]
+		return str(row1[0])
 	
 	def buscaRespuesta(self, que):
 		db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="polarizador") ##conexion a la bd

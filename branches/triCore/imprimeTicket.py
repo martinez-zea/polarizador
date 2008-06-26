@@ -4,13 +4,28 @@
 import os
 import datetime
 
+
+
 class imprimeTicket:
-    def imp(self,codigo,respuesta,cuantos,acuerdo,veces):
+    def imp(self,codigo,respuesta,cuantos,acuerdo,veces, cualpreg):
         #self.imprimeTicket()
-		cualPregunta = """
-La conciencia de ser observado acrecenta 
+		cualPregunta = ""
+		if cualpreg == "1":
+			cualPregunta = """
+La conciencia de ser observado aumenta 
 su sensacion de seguridad?
-		"""		
+		"""
+		if cualpreg == "2":
+			cualPregunta = """
+Estar en una base de datos 
+es pertenecer a una comunidad?
+		"""
+		if cualpreg == "3":
+			cualPregunta = """
+Deberia usted tener acceso 
+a la informacion de otros? 
+		"""
+				
 		tiempo = datetime.datetime.now()
 		tiempoStr = tiempo.strftime("Fecha: %Y/%m/%d   Hora: %H:%M:%S")
 
@@ -52,7 +67,7 @@ Tiquete numero:"""+codigo+"""
 
 """+tiempoStr+"""
 
-Usted me ha visitado """+veces+"""veces
+Usted me ha visitado """+veces+""" veces
 
 
 ********************************************
