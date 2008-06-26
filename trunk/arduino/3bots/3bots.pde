@@ -116,12 +116,12 @@ void loop(){
     //Serial.println(mandaPython); 
  }
     //2. escribe la pregunta
-    if (mandaPython == 50){    
+    if (mandaPython == 2){    
       escribePregunta();  
     } 
 
     //3. escribe el saludo 
-    if(mandaPython == 51){
+    if(mandaPython == 3){
       escribeSaludo(); 
     }
 
