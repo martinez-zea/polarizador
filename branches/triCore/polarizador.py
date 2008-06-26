@@ -82,11 +82,15 @@ def polariza():
 			lcd.write('3')
 			lcd.close()
 			
+			tiempo = datetime.datetime.now()
+			fecha = tiempo.strftime("%Y/%m/%d")
+			hora = tiempo.strftime("%H:%M:%S")
+			
 			if bots == 1:
 				print "boton 2 presionado por ", codigo
 				#cantaRespuesta1()
 				
-				p.guardaRespuesta(codigo, "si")
+				p.guardaRespuesta(codigo,1, "si",hora,fecha)
 				p.buscaRespuesta("no")
 				print str(p.buscaPares("si"))
 				h.que("Imprimiendo")
@@ -95,7 +99,7 @@ def polariza():
 
 			if bots == 2:
 				print "boton 3 presionado por ", codigo
-				p.guardaRespuesta(codigo, "no")
+				p.guardaRespuesta(codigo,1, "no",hora,fecha)
 				p.buscaRespuesta("si")
 				print str(p.buscaPares("no"))
 				h.que("Imprimiendo")

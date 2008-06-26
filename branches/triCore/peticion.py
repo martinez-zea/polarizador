@@ -21,11 +21,11 @@ class peticion:
 
 
 	## Guarda el dato de la respuesta en la bd
-	def guardaRespuesta(self, quien, respuesta):
+	def guardaRespuesta(self, quien, pregunta,respuesta,hora,fecha):
 
 		db = MySQLdb.connect(host="localhost", user="root", passwd="", db="polarizador")
 		cursor = db.cursor()
-		cursor.execute("INSERT INTO responde (quien,respuesta) VALUES (%s,%s)", (quien,respuesta))
+		cursor.execute("INSERT INTO responde (quien,pregunta,respuesta,hora,fecha) VALUES (%s,%s,%s,%s,%s)", (quien,pregunta,respuesta,hora,fecha))
 		cursor.close
 
 	################################################################################

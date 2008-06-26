@@ -12,7 +12,7 @@ La conciencia de ser observado acrecenta
 su sensacion de seguridad?
 		"""		
 		tiempo = datetime.datetime.now()
-		tiempoStr = tiempo.strftime("Fecha: %Y-%m-%d   Hora: %H:%M:%S")
+		tiempoStr = tiempo.strftime("Fecha: %Y/%m/%d   Hora: %H:%M:%S")
 
 		imp = """ &%FW0 
 
