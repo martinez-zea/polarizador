@@ -55,15 +55,17 @@ def polariza():
 		print 'Este es el polarizador'
 		lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
 		lcd.write('3')
+		print "escribi 3"
 		lcd.close()
-		
+		print "cierro el serial"
+
 		lector = serial.Serial('/dev/ttyUSB1', 9600, timeout=None)
 		codigo = str(lector.readline())
 		lector.close()
 		print 'Usted es el visitante numero: ', codigo
 		print 'Presione un boton para responder la pregunta'
 
-		p.buscaAnteriores(codigo)			
+		p.buscaAnteriores(int(codigo))			
 		
 		while len(codigo) > 0:
 			lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)

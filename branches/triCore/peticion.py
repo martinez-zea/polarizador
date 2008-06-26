@@ -6,7 +6,7 @@ import os
 import time
 import habla
 
-
+h = habla.habla()
 
 ## Habla con espeak
 class peticion:
@@ -40,7 +40,7 @@ class peticion:
 		cursor1.execute("SELECT quien, respuesta  FROM responde WHERE respuesta = %s ORDER BY rand()" ,(que)) ##busca el ultimo registro	
 		row1 = cursor1.fetchone() ##mete el resultado en fetch one
 		print row1[0], row1[1]
-		h = habla.habla()
+		
 		h.que("Usted respondio lo contrario al visitante numero")
 		h.que(str(row1[0]))
 		#habla("espeak", "-ves",  "-s 135", row1[1])
@@ -49,7 +49,7 @@ class peticion:
 		db = MySQLdb.connect(host="localhost", user="root", passwd="", db="polarizador")
 		cursor = db.cursor()
 		cuantos = cursor.execute("SELECT quien  FROM responde WHERE quien = %s ", (codigo))
-		#print cuantos
+		print cuantos
 	
 		if cuantos == 0:
 			h.que("Esta es la primera vez que me visita")
