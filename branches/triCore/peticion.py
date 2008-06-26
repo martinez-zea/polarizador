@@ -23,7 +23,7 @@ class peticion:
 	## Guarda el dato de la respuesta en la bd
 	def guardaRespuesta(self, quien, respuesta):
 
-		db = MySQLdb.connect(host="localhost", user="root", passwd="", db="panoptico")
+		db = MySQLdb.connect(host="localhost", user="root", passwd="", db="polarizador")
 		cursor = db.cursor()
 		cursor.execute("INSERT INTO responde (quien,respuesta) VALUES (%s,%s)", (quien,respuesta))
 		cursor.close
@@ -35,7 +35,7 @@ class peticion:
 
 	
 	def buscaRespuesta(self, que):
-		db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="panoptico") ##conexion a la bd
+		db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="polarizador") ##conexion a la bd
 		cursor1 = db1.cursor() ##crea cursor
 		cursor1.execute("SELECT quien, respuesta  FROM responde WHERE respuesta = %s ORDER BY rand()" ,(que)) ##busca el ultimo registro	
 		row1 = cursor1.fetchone() ##mete el resultado en fetch one
@@ -62,7 +62,7 @@ class peticion:
 			print "usted se he registrado",cuantos,"veces"
 
 	def buscaPares(self, que):
-		db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="panoptico") ##conexion a la bd
+		db1 = MySQLdb.connect(host="localhost", user="root", passwd="", db="polarizador") ##conexion a la bd
 		cursor1 = db1.cursor() ##crea cursor
 		cursor1.execute("SELECT respuesta  FROM responde WHERE respuesta = %s" ,(que)) ##busca el ultimo registro	
 		columnas = int(cursor1.rowcount)
