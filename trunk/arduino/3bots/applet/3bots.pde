@@ -15,7 +15,6 @@ int mandaPython = 0;
 
 //tiempo
 long intervalo = 0;
-long intervalo2 = 0;
 
 void setup(){
   //modos de los pines
@@ -28,7 +27,6 @@ void setup(){
   escribeSaludo();
   //inicia el timepo
   intervalo = millis();
-  intervalo2 = millis();
 }
 
 //Funcion para escribir la pregnta en lcd
@@ -63,28 +61,10 @@ void escribePregunta(){
 
 //Escribe un saludo en el lcd
 void escribeSaludo(){
-  if (millis() - intervalo2 > 6000){
-    intervalo2 = millis();
-  } 
-  else if (millis() - intervalo2 == 2000){
-  lcd.leftScroll(20,50);
   lcd.clear();
-  lcd.printIn("Soy El ");
+  lcd.printIn("Hola");
   lcd.cursorTo(2,0);
-  lcd.printIn("Polarizador");
-  }
-  else if (millis() - intervalo2 == 4000){
-  lcd.leftScroll(20,50);
-  lcd.clear();
-  lcd.printIn("Identifiquese ");  
-  lcd.cursorTo(2,0);
-  lcd.printIn("Usando su");
-  }
-  else if (millis() - intervalo2 == 6000){
-    lcd.leftScroll(20,50);
-  lcd.clear();
-  lcd.printIn("Codigo de barras");
-  }
+  lcd.printIn("El Pola");
 }
 
 void leeBotones(){

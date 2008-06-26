@@ -1,4 +1,10 @@
+#include "WProgram.h"
 #include <LCD4Bit.h> //importa libreria lcd
+void setup();
+void escribePregunta();
+void escribeSaludo();
+void leeBotones();
+void loop();
 LCD4Bit lcd = LCD4Bit(2); //cuantas linesas tiene la pantalla
 
 //pines de los botones
@@ -126,4 +132,17 @@ void loop(){
     }
 
   }
+
+
+int main(void)
+{
+	init();
+
+	setup();
+    
+	for (;;)
+		loop();
+        
+	return 0;
+}
 
