@@ -4,7 +4,7 @@ import pycha.pie
 import pycha.color
 import MySQLdb
 
-## llamar t.pieChart('test.png', 1, 'red')
+## llamar t.pieChart('preg1.png', 1, 'red')
 
 class tortas:
 	def pieChart(self,output,pregunta,colSch):

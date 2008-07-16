@@ -40,10 +40,12 @@ import random as r
 import imprimeTicket
 import habla
 import peticion
+import tortas
 
 h = habla.habla()
 m = imprimeTicket.imprimeTicket()
 p = peticion.peticion()
+t = tortas.tortas()
 
 quienId = 0		
 
@@ -96,6 +98,10 @@ def polariza():
 				h.que("Imprimiendo")
 				m.imp(codigo,"SI",str(p.buscaPares("si")),"de acuerdo",str(anteriores), pregnum)
 				h.que("Gracias por usarme")
+				#dibuja charts
+				pieChart('preg1.png', 1, 'red')
+				pieChart('preg2.png', 2, 'green')
+				pieChart('preg3.png', 3, 'black')
 				break
 
 			if bots == 1:
@@ -106,6 +112,10 @@ def polariza():
 				h.que("Imprimiendo")
 				m.imp(codigo,"NO",str(p.buscaPares("no")),"en desacuerdo",str(anteriores), pregnum)
 				h.que("Gracias por usarme")
+				#dibuja charts
+				pieChart('preg1.png', 1, 'red')
+				pieChart('preg2.png', 2, 'green')
+				pieChart('preg3.png', 3, 'black')
 				break
 		#	print bots
 if __name__ == '__main__': polariza()
