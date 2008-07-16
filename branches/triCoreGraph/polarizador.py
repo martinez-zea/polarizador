@@ -79,6 +79,13 @@ def polariza():
 			lcd.write(pregnum)
 			lcd.close()
 			
+			if pregnum == 1:
+			h.que('La conciencia de ser observado, aumenta su sensacion de seguridad?')
+			if cualpreg == 2:
+			h.que('Estar en una base de datos, es pertenecer a una comunidad?')
+			if cualpreg == 3:
+			h.que('Deberia usted tener acceso, a la informacion de otros?')
+			
 			botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)
 			h.que("Presione un boton, para contestar la pregunta")
 			bots = int(botones.readline())

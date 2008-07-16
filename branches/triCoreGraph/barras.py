@@ -3,7 +3,9 @@ import cairo
 import pycha.bar
 import MySQLdb
 
-
+##Se llama:
+#b.barChart('preg4.png', pycha.bar.VerticalBarChart)
+#b.barChart('preg4.png', pycha.bar.HorizontalBarChart)
 class barras:
 	def barChart(self, output, chartFactory):
 		dbg = MySQLdb.connect(host="localhost", user="root", passwd="", db="polarizador") ##conexion a la bd
