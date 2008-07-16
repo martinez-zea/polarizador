@@ -36,16 +36,21 @@ import serial
 import sys
 import time
 import random as r
+import pycha
+import pycha.bar
+import pycha.pie
 
 import imprimeTicket
 import habla
 import peticion
 import tortas
+import barras
 
 h = habla.habla()
 m = imprimeTicket.imprimeTicket()
 p = peticion.peticion()
 t = tortas.tortas()
+b = barras.barras()
 
 quienId = 0		
 
@@ -99,9 +104,10 @@ def polariza():
 				m.imp(codigo,"SI",str(p.buscaPares("si")),"de acuerdo",str(anteriores), pregnum)
 				h.que("Gracias por usarme")
 				#dibuja charts
-				pieChart('preg1.png', 1, 'red')
-				pieChart('preg2.png', 2, 'green')
-				pieChart('preg3.png', 3, 'black')
+				t.pieChart('preg1.png', 1, 'red')
+				t.pieChart('preg2.png', 2, 'green')
+				t.pieChart('preg3.png', 3, 'grey')
+				b.barChart('preg4.png', pycha.bar.VerticalBarChart)
 				break
 
 			if bots == 1:
@@ -113,9 +119,11 @@ def polariza():
 				m.imp(codigo,"NO",str(p.buscaPares("no")),"en desacuerdo",str(anteriores), pregnum)
 				h.que("Gracias por usarme")
 				#dibuja charts
-				pieChart('preg1.png', 1, 'red')
-				pieChart('preg2.png', 2, 'green')
-				pieChart('preg3.png', 3, 'black')
+				t.pieChart('preg1.png', 1, 'red')
+				t.pieChart('preg2.png', 2, 'green')
+				t.pieChart('preg3.png', 3, 'grey')
+				b.barChart('preg4.png', pycha.bar.VerticalBarChart)
+				
 				break
 		#	print bots
 if __name__ == '__main__': polariza()

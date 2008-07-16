@@ -17,7 +17,7 @@ class tortas:
 		cuantosNo = int(cursor1.rowcount)
 		cursor1.close()
 		
-		surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 266, 300)
+		surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 341, 384)
 
 		dataSet = [('si', [[0, cuantosSi]]), ('no', [[0, cuantosNo]])]
 	
@@ -31,10 +31,10 @@ class tortas:
 				'hide': True,
 			},
 			'padding': {
-				'left': 70,
-				'right': 10,
-				'top': 0,
-				'bottom': 0,
+				'left': 40,
+				'right': 50,
+				'top': 30,
+				'bottom': 30,
 			},
 			'legend': {
 				'hide': True,
