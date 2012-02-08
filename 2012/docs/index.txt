@@ -1,0 +1,130 @@
+.. polarizador documentation master file, created by
+   sphinx-quickstart on Sun Nov  1 19:03:57 2009.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to polarizador's documentation!
+=======================================
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+Impresora
+=========
+Comandos para la TM-U200
+
+Inicializa
+----------
+* GS @
+
+echo -e "\x1B\x40" > /dev/ttyS0 
+
+Justificacion
+-------------
+* ESC a n
+
+Izquierda
+echo -e "\x1B\x61\x30" > /dev/ttyS0
+
+Centro
+echo -e "\x1B\x61\x31" > /dev/ttyS0
+
+Derecha
+echo -e "\x1B\x61\x32" > /dev/ttyS0
+
+Doble golpe
+-----------
+* ESC G n
+
+ON
+echo -e "\x1B\x47\x31" > /dev/ttyS0
+
+OFF
+echo -e "\x1B\x47\x30" > /dev/ttyS0
+
+
+Enfasis
+-------
+* ESC E n
+
+ON
+echo -e "\x1B\x45\x31" > /dev/ttyS0
+
+OFF
+echo -e "\x1B\x45\x30" > /dev/ttyS0
+
+Subrallado
+----------
+* ESC − n
+
+ON
+echo -e "\x1B\x2D\x31" > /dev/ttyS0
+
+OFF
+echo -e "\x1B\x2D\x30" > /dev/ttyS0
+
+Cortador
+--------
+* GS V m
+* GS V m n
+
+Corte total con feed:
+echo -e "\x1D\x56\x41" > /dev/ttyS0 ::
+envia GS V 65
+
+Corte total sin feed:
+echo -e "\x1D\x56\x30" > /dev/ttyS0 ::
+envia GS V 0
+
+Configuracion del sistema
+=========================
+
+Iniciar las X sin login manager
+-------------------------------
+Editar el archivo /etc/inittab y cambiar:
+
+id:3:initdefault:
+[...] 
+x:5:respawn:/usr/bin/xdm -nodaemon ::
+
+por:
+
+id:5:initdefault:
+[...]
+x:5:once:/bin/su PREFERED_USER -l -c "/bin/bash --login -c startx >/dev/null 2>&1" ::
+
+Inicar programas automaticamente
+--------------------------------
+Esta configuracion es para openbox. Editar/crear el archivo ~/.config/openbox/autostart.sh y colocar algo asi:
+
+# Run the system-wide support stuff
+. $GLOBALAUTOSTART
+# Programs to launch at startup
+hsetroot ~/wallpaper.png &
+xcompmgr -c -t-5 -l-5 -r4.2 -o.55 &
+# SCIM support (for typing non-english characters)
+export LC_CTYPE=ja_JP.utf8
+export XMODIFIERS=@im=SCIM
+export GTK_IM_MODULE=scim
+export QT_IM_MODULE=scim
+scim -d &
+# Programs that will run after Openbox has started
+(sleep 2 && fbpanel) & ::
+
+Mas info en http://icculus.org/openbox/index.php/Help:Autostart
+
+Ocultar mouse
+-------------
+Instalar unclutter y agregarlo a la lista de programas a iniciar automaticamente:
+
+unclutter -display :0.0 -idle 5
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
