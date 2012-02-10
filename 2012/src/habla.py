@@ -1,16 +1,18 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-import os
-import sys
+from espeak import espeak
 
 class habla:
-	def que(self,*args):
+	def que(self,sentence):
 		"""
       Interactua con eSpeak el motor de TTS usado para el habla.
+
       La cadena de texto que recibe como argumento es pasada a un
       nuevo proceso del TTS con los parametros prestablecidos de 
       sintesis de voz.
+
+	  Usa python-espeak: https://answers.launchpad.net/python-espeak
 
       Arguments:
         *args: str
@@ -18,9 +20,9 @@ class habla:
       Return:
         none
     """
-		pid = os.fork()
-		if not pid:
-			os.execvp("espeak", ("espeak", "-v es-la+m2", "-k 20", "-s 140") +  args)
-		return os.wait()[0]
+		espeak.set_voice("es-la+m2")
+		espeak.set_parameter(espeak.Parameter.Capitals,20)
+		espeak.set_parameter(espeak.Parameter.Rate, 140)
+		espeak.synth(sentence)
     	
 

@@ -13,10 +13,15 @@
        ./ssyssyyyo-              ./+++/:-.`       
 
 					El polarizador                                                  
-				  coded by Nerdbots
-			  http://nerdbots.info/polarizador
+				  coded by martinez-zea
+			  http://martinez-zea.info
 	Camilo Martinez <cmart AT decolector DOT net>
 		Gabriel Zea <zea AT decolector DOT net>	
  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒		
 
-info
+Esta es la revision del polarizador para el 2012,
+El codigo esta disenado para ejecutarse en Archlinux,
+corriendo python2 y Arduino Uno.
+
+Un vistazo a la documentacion dara mas iformacion al
+respecto.

@@ -1,0 +1,18 @@
+Software Principal
+==================
+
+El software cotrolador del polarizador esta hecho en Python, esta version
+esta actualizada para ser ejecutada en Archlinux. Para esta momento, Arch
+tiene Python 2 y 3 en el sistema, siendo la version 3 por defecto, para eso
+es necesario invocar el interprete via "#/usr/bin/python2"
+
+Requerimientos
+==============
+
+* Python 2.x
+* espeak
+* python-espeak https://launchpad.net/python-espeak
+* pyserial
+* matplotlib
+* pyGtk
+

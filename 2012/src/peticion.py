@@ -1,20 +1,13 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
 import sqlite3 
-import os 
 import datetime
-import time
-import habla
 
-h = habla.habla()
-
-## Habla con espeak
 class Peticion:
 	def __init__(self):
 		
 		self.id = None
-	
 	
 
 	def ahora(self):
@@ -77,9 +70,8 @@ class Peticion:
 		cursor1 = db1.cursor() ##crea cursor
 		cursor1.execute("select hora quien from responde where quien = ?", (q,)) ##busca el ultimo registro	
 		res = cursor1.fetchone() ##mete el resultado en fetch one
-		print "la lista tiene ",len(res), " elementos"		
+		print "lista tiene ",len(res), " elementos"		
 		for i in res:
-
 			print i[0]
 		return str(res[0])
 
@@ -95,7 +87,6 @@ class Peticion:
 
 		Ej: buscaFecha(108)
 		"""
-		q = quien
 		db1 = sqlite3.connect('pola.db') ##conexion a la bd
 		cursor1 = db1.cursor() ##crea cursor
 		cursor1.execute("select fecha from responde where quien = ?",(quien,)) ##busca el ultimo registro	
@@ -105,32 +96,30 @@ class Peticion:
 			print i
 
 		return str(res[0])
-	
-	def buscaRespuesta(self, que):
+
+	def buscaRespuesta(self, pregnum, respuesta):
 		"""
 		Busca una respuesta en la base de datos contraria a la respusta en el parametro 'que', seleccionada aleatoriamente.  Luego pronuncia el resultado de la comparacion con speak.
 
 		Arguments:
-		-que: str, respuesta del usuario a ser comparada, debe ser 'si' o 'no'
+		-pregnum: int, numero de identificacion de la pregunta
+		-respuesta: str, respuesta del usuario a ser comparada, debe ser 'si' o 'no'
 
-		Returns: Nada
+		Returns: Numero de usuario en str
 
-		Ej: buscaRespuesta('si')
+		Ej: buscaRespuesta(1, 'si')
 		"""
-		q = str(que)
 		db1 = sqlite3.connect('pola.db')#conexion a la bd
 		cursor1 = db1.cursor() ##crea cursor
-		cursor1.execute("select quien, respuesta from responde where respuesta != ? order by random()" ,(q,)) ##busca el ultimo registro
+		cursor1.execute("SELECT quien, respuesta FROM responde WHERE pregunta=? AND respuesta != ? order by random()" ,(pregnum,respuesta)) ##busca el ultimo registro
 		row1 = cursor1.fetchone() ##mete el resultado en fetch one
 
 		if row1:
 			print row1[0], row1[1]
-		
-			h.que("Usted respondio lo contrario al visitante numero")
-			h.que(str(row1[0]))
+			return str(row1[0])		
 		else:
-			h.que("Usted respondio lo mismo que el resto de los visitantes")
-		#habla("espeak", "-ves",  "-s 135", row1[1])
+			print 'Todos iguales'
+			return '0'
 
 	def buscaAnteriores(self, quien):
 
@@ -151,17 +140,8 @@ class Peticion:
 		cuantos = cursor.fetchall()
 		print len(cuantos)
 
-		if len(cuantos) == 0:
-			h.que("Esta es la primera vez que me visita")
-			print "esta es la primera vez"
 		
-		if len(cuantos) > 0:
-			h.que("Usted me ha visitado")
-			h.que(str(len(cuantos)))
-			h.que("veces")
-			print "usted se he registrado",len(cuantos),"veces"
-
-		return cuantos
+		return len(cuantos)
 
 	def buscaPares(self, preg, que):
 

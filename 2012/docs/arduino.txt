@@ -1,0 +1,36 @@
+Arduino
+=======
+El polarizador usa tres ardunios: uno controla la lectura del
+lector de codigos de barras, otro la los botones de respuesta
+y el ultimo controla la escritura del LCD.
+
+Para la version del 2012 el codigo de los arduinos fue actualizado
+a Arduino Uno.
+
+LCD
+---
+Esta version usa la libreria LCDcrystal incluida en el core de
+Arduino. Este codigo fue reescrito totalmente para esta version.
+
+El programa espera recibir via serial el comando para reproducir
+cada uno de los mensajes incluidos en el soft:
+
+* Saludo: "Soy el polarizador ..."
+* Pregunta uno: "La conciencia de ser .."
+* Pregunta dos: "Deberia usted ..."
+* Pregunta Tres: "Estar en una base de datos .."
+* Boton: "Presione un boton ..."
+* Gracias: "Gracias por ..."
+
+
+Botones
+-------
+No hay mucho que decir, lee el estado de cada uno de los pulsadores,
+y lo envia via serial. Envia 1 o 2, dependiendo del boton seleccionado.
+El mapeo de este dato a la respuesta, se realiza en el codigo de Python
+
+Lector de codigos de barras
+---------------------------
+Es un codigo que lee la salida del dispositivo y la imprime por el
+puerto serial. Este codigo no se ha modificado desde la primera version.
+

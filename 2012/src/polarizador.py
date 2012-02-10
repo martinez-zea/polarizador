@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 #          .Mms:.
 #          .Ms:smdo-
 #-hhhhhhhhhdMo   .+hmy/
@@ -10,7 +10,7 @@
 # Ny        hy/
 # Ny
 # y+
-#http://nerdbots.info/polarizador
+#http://martinez-zea.info/
 #Camilo Martinez <cmart AT decoloector DOT net>
 #Gabriel Zea <zea AT randomlab DOT net>
 #
@@ -29,7 +29,8 @@
 
 
 
-import sql3
+
+import sqlite3
 import os
 import datetime
 import serial
@@ -40,97 +41,153 @@ import random as r
 #import pycha.bar
 #import pycha.pie
 
-import imprimeTicket
+#import imprimeTicket
 import habla
 import peticion
-import tortas
-import barras
+#import tortas
+#import barras
 
 h = habla.habla()
-m = imprimeTicket.imprimeTicket()
-p = peticion.peticion()
-t = tortas.tortas()
-b = barras.barras()
+#m = imprimeTicket.imprimeTicket()
+p = peticion.Peticion()
+#t = tortas.tortas()
+#b = barras.barras()
 
 quienId = 0
+
+#serial ports
+lcd_port = '/dev/ttyACM0'
+reader_port = '/dev/ttyACM1'
+buttons_port = '/dev/ttyUSB0'
+
+#LCD messages
+lcd_msgs = {'question1':'1',
+			'question2':'2',
+			'question3':'3',
+			'button':'4',
+			'thanks':'5',
+			'elPola':'6',
+			}
+
+def lcd_com(msg):
+	"""
+		Escribe el mensaje necesario al puerto
+		serial para controlar el LCD
+	"""
+	print '--- LCD init ---'
+	lcd = serial.Serial(lcd_port, 9600, timeout=None)
+	lcd.write(msg)
+	print 'msg: %s' %msg
+	lcd.close()
+	print '--- LCD end ---'
+
+def elPola():
+	"""
+		Dice el mensaje de inicio
+	"""
+	h.que('Soy el Polarizador')
+	lcd_com(lcd_msgs['elPola'])
+	h.que('Identifiquese usando su codigo de barras')
+	print '*** elPola ***'
+
+def bar_reader():
+	"""
+		Escucha el puerto serial en busca del
+		codigo de barras entregado por el lector
+
+		return: el codigo
+	"""
+	print '--- Barcode reader ---'
+	reader = serial.Serial(reader_port, 9600, timeout=None)
+	code = str(reader.readline())
+	print 'barcode: %s' %code
+	reader.close()
+	print '--- Barcode end ---'
+	
+	return code
 
 ################################################################################ Funcion Principal
 def polariza():
 	while 1:
-		h.que("Soy el Polarizador")
-		print 'Este es el polarizador'
-		lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
-		lcd.write('4')
-		print "escribi 4"
-		lcd.close()
-		print "cierro el serial"
+		elPola()	
+		barcode = bar_reader()
+		
+		other_interactions = p.buscaAnteriores(int(barcode))
+		if other_interactions  == 0:
+			h.que("Esta es la primera vez que me visita")
+			print "primera vez"
 
-		lector = serial.Serial('/dev/ttyUSB1', 9600, timeout=None)
-		codigo = str(lector.readline())
-		lector.close()
-		print 'Usted es el visitante numero: ', codigo
-		print 'Presione un boton para responder la pregunta'
+		elif other_interactions > 0:
+			h.que("Usted me ha visitado")
+			h.que(str(other_interactions))
+			if other_interactions == 1:
+				h.que('vez')
+			else:	
+				h.que("veces")
+			print "el visitante se ha registrado %s veces" % (other_interactions)
+	
 
-		anteriores = p.buscaAnteriores(int(codigo))
-
-		while len(codigo) > 0:
-			pregnum = str(r.randint(1,3))
-			lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
-			lcd.write(pregnum)
-			lcd.close()
-
+		while len(barcode) > 0:
+			pregnum = r.randint(1,3)
 			if pregnum == 1:
-			h.que('La conciencia de ser observado, aumenta su sensacion de seguridad?')
-			if cualpreg == 2:
-			h.que('Estar en una base de datos, es pertenecer a una comunidad?')
-			if cualpreg == 3:
-			h.que('Deberia usted tener acceso, a la informacion de otros?')
+				lcd_com(lcd_msgs['question1'])
+				h.que('La conciencia de ser observado, aumenta su sensacion de seguridad?')
+			elif pregnum == 2:
+				lcd_com(lcd_msgs['question2'])
+				h.que('Estar en una base de datos, es pertenecer a una comunidad?')
+			elif pregnum == 3:
+				lcd_com(lcd_msgs['question3'])
+				h.que('Deberia usted tener acceso, a la informacion de otros?')
 
-			botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)
+			
+			botones = serial.Serial(buttons_port, 9600, timeout=None)
 			h.que("Presione un boton, para contestar la pregunta")
-			bots = int(botones.readline())
+			bots = botones.readline()
 			botones.close()
+			
 
-
-			lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
-			lcd.write('4')
-			lcd.close()
+			lcd_com(lcd_msgs['elPola'])
 
 			tiempo = datetime.datetime.now()
 			fecha = tiempo.strftime("%Y/%m/%d")
 			hora = tiempo.strftime("%H:%M:%S")
 
-			if bots == 2:
-				print "boton 2 presionado por ", codigo
-				#cantaRespuesta1()
+			if int(bots) == 2:
+				print "boton 2 presionado por %s", barcode
 
-				p.guardaRespuesta(codigo,1,"si",hora,fecha)
-				p.buscaRespuesta("no")
-				print str(p.buscaPares("si"))
+				p.guardaRespuesta(barcode,pregnum,"si",hora,fecha)
+				opposite = p.buscaRespuesta(pregnum, "no")
+				h.que("Usted respondio lo contrario al visitante numero")
+				h.que(opposite)
+				print str(p.buscaPares(pregnum,"si"))
+
 				h.que("Imprimiendo")
-				m.imp(codigo,"SI",str(p.buscaPares("si")),"de acuerdo",str(anteriores), pregnum)
-				h.que("Gracias por usarme")
+				#m.imp(codigo,"SI",str(p.buscaPares("si")),"de acuerdo",str(anteriores), pregnum)
+				#h.que("Gracias por usarme")
 				#dibuja charts
-				t.pieChart('preg1.png', 1, 'red')
-				t.pieChart('preg2.png', 2, 'green')
-				t.pieChart('preg3.png', 3, 'grey')
-				b.barChart('preg4.png', pycha.bar.VerticalBarChart)
+				#t.pieChart('preg1.png', 1, 'red')
+				#t.pieChart('preg2.png', 2, 'green')
+				#t.pieChart('preg3.png', 3, 'grey')
+				#b.barChart('preg4.png', pycha.bar.VerticalBarChart)
 				break
 
-			if bots == 1:
-				print "boton 1 presionado por ", codigo
-				p.guardaRespuesta(codigo,1, "no",hora,fecha)
-				p.buscaRespuesta("si")
-				print str(p.buscaPares("no"))
+			if int(bots) == 1:
+				print "boton 1 presionado por ", barcode
+
+				p.guardaRespuesta(barcode,pregnum, "no",hora,fecha)
+				opposite = p.buscaRespuesta(pregnum, "si")
+				h.que("Usted respondio lo contrario al visitante numero")
+				h.que(opposite)
+				print str(p.buscaPares(pregnum, "no"))
+				
 				h.que("Imprimiendo")
-				m.imp(codigo,"NO",str(p.buscaPares("no")),"en desacuerdo",str(anteriores), pregnum)
-				h.que("Gracias por usarme")
+				#m.imp(codigo,"NO",str(p.buscaPares("no")),"en desacuerdo",str(anteriores), pregnum)
+				#h.que("Gracias por usarme")
 				#dibuja charts
-				t.pieChart('preg1.png', 1, 'red')
-				t.pieChart('preg2.png', 2, 'green')
-				t.pieChart('preg3.png', 3, 'grey')
-				b.barChart('preg4.png', pycha.bar.VerticalBarChart)
+				#t.pieChart('preg1.png', 1, 'red')
+				#t.pieChart('preg2.png', 2, 'green')
+				#t.pieChart('preg3.png', 3, 'grey')
+				#b.barChart('preg4.png', pycha.bar.VerticalBarChart)
 
 				break
-		#	print bots
 if __name__ == '__main__': polariza()

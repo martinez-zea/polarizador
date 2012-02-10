@@ -1,0 +1,73 @@
+Impresora
+=========
+La impresora usada para el polarizador es una Epson TM-U 200 con interfase
+serial. En versiones anteriores se uso una Ithaca con interfase paralela.
+
+
+Comandos para la TM-U200
+========================
+
+Inicializa
+----------
+* GS @
+
+echo -e "\x1B\x40" > /dev/ttyS0 
+
+Justificacion
+-------------
+* ESC a n
+
+Izquierda
+echo -e "\x1B\x61\x30" > /dev/ttyS0
+
+Centro
+echo -e "\x1B\x61\x31" > /dev/ttyS0
+
+Derecha
+echo -e "\x1B\x61\x32" > /dev/ttyS0
+
+Doble golpe
+-----------
+* ESC G n
+
+ON
+echo -e "\x1B\x47\x31" > /dev/ttyS0
+
+OFF
+echo -e "\x1B\x47\x30" > /dev/ttyS0
+
+
+Enfasis
+-------
+* ESC E n
+
+ON
+echo -e "\x1B\x45\x31" > /dev/ttyS0
+
+OFF
+echo -e "\x1B\x45\x30" > /dev/ttyS0
+
+Subrallado
+----------
+* ESC − n
+
+ON
+echo -e "\x1B\x2D\x31" > /dev/ttyS0
+
+OFF
+echo -e "\x1B\x2D\x30" > /dev/ttyS0
+
+Cortador
+--------
+* GS V m
+* GS V m n
+
+Corte total con feed:
+echo -e "\x1D\x56\x41" > /dev/ttyS0 ::
+envia GS V 65
+
+Corte total sin feed:
+echo -e "\x1D\x56\x30" > /dev/ttyS0 ::
+envia GS V 0
+
+
