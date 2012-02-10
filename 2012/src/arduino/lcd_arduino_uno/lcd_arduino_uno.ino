@@ -42,6 +42,9 @@ long previousMillisChar = 0;
 long previousMillisScrl = 0;
 long previousMillisRead =0;
 
+int counter1 = 0;
+int counter2 = 0;
+
 void setup(){
   //inicia el serial
   Serial.begin(9600);
@@ -85,10 +88,6 @@ void preguntaUno(){
   lcd.clear();
   writeToScreen(0, conciencia);
   writeToScreen(1, ser);
-  if(cM - previousMillisRead > waitToRead){
-    previousMillisRead = cM;
-    Serial.println("long");
-  }
   scroll();
 
   lcd.clear();
@@ -140,30 +139,34 @@ void writeToScreen(int line, String sentence){
   int s = sentence.length()+1;
   char snc[s]; 
   sentence.toCharArray(snc,s);
-  int counter = 0;
+  //int counter = 0;
   
   lcd.setCursor(0,line);
-  do{
+  if (counter1 < sizeof(snc)-1){
     unsigned long currentMillis = millis();
     if(currentMillis - previousMillisChar > character){
       previousMillisChar = currentMillis;
-      lcd.print(snc[counter]);
-      counter++;
+      lcd.print(snc[counter1]);
+      counter1++;
     }  
-  } while(counter < sizeof(snc)-1);
+  } else {
+    counter1 = 0;
+  }
 }
 
 void scroll(){
   unsigned long cM = millis();
    
-  int counter2 = 0;
-  while(counter2 < 17){
+  //int counter2 = 0;
+  if(counter2 < 17){
     unsigned long currentMillis = millis();
     if(currentMillis - previousMillisScrl > scrollChar){
       previousMillisScrl = currentMillis;  
       lcd.scrollDisplayLeft();
       counter2++;
     }
+  } else {
+    counter2 =0;
   } 
 }
 

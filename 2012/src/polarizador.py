@@ -1,14 +1,14 @@
 #!/usr/bin/python
-#          .Mms:.                        
-#          .Ms:smdo-                     
-#-hhhhhhhhhdMo   .+hmy/                 
-#          .Mo       -odds:             
+#          .Mms:.
+#          .Ms:smdo-
+#-hhhhhhhhhdMo   .+hmy/
+#          .Mo       -odds:
 #          .Mo         ./mMdhhhhhhhhhhhh-
-#          .Mo      -+hms/              
-# NNhhhhhhhhMo   /ymh+.                  
-# Ny       .Mhodds:                      
-# Ny        hy/                         
-# Ny                                     
+#          .Mo      -+hms/
+# NNhhhhhhhhMo   /ymh+.
+# Ny       .Mhodds:
+# Ny        hy/
+# Ny
 # y+
 #http://nerdbots.info/polarizador
 #Camilo Martinez <cmart AT decoloector DOT net>
@@ -29,8 +29,8 @@
 
 
 
-import sql3    
-import os 
+import sql3
+import os
 import datetime
 import serial
 import sys
@@ -52,7 +52,7 @@ p = peticion.peticion()
 t = tortas.tortas()
 b = barras.barras()
 
-quienId = 0		
+quienId = 0
 
 ################################################################################ Funcion Principal
 def polariza():
@@ -71,39 +71,39 @@ def polariza():
 		print 'Usted es el visitante numero: ', codigo
 		print 'Presione un boton para responder la pregunta'
 
-		anteriores = p.buscaAnteriores(int(codigo))			
-		
+		anteriores = p.buscaAnteriores(int(codigo))
+
 		while len(codigo) > 0:
 			pregnum = str(r.randint(1,3))
 			lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
 			lcd.write(pregnum)
 			lcd.close()
-			
+
 			if pregnum == 1:
 			h.que('La conciencia de ser observado, aumenta su sensacion de seguridad?')
 			if cualpreg == 2:
 			h.que('Estar en una base de datos, es pertenecer a una comunidad?')
 			if cualpreg == 3:
 			h.que('Deberia usted tener acceso, a la informacion de otros?')
-			
+
 			botones = serial.Serial('/dev/ttyUSB0', 9600, timeout=None)
 			h.que("Presione un boton, para contestar la pregunta")
 			bots = int(botones.readline())
-			botones.close() 
-			
-			
+			botones.close()
+
+
 			lcd = serial.Serial('/dev/ttyUSB2', 9600, timeout=None)
 			lcd.write('4')
 			lcd.close()
-			
+
 			tiempo = datetime.datetime.now()
 			fecha = tiempo.strftime("%Y/%m/%d")
 			hora = tiempo.strftime("%H:%M:%S")
-			
+
 			if bots == 2:
 				print "boton 2 presionado por ", codigo
 				#cantaRespuesta1()
-				
+
 				p.guardaRespuesta(codigo,1,"si",hora,fecha)
 				p.buscaRespuesta("no")
 				print str(p.buscaPares("si"))
@@ -130,7 +130,7 @@ def polariza():
 				t.pieChart('preg2.png', 2, 'green')
 				t.pieChart('preg3.png', 3, 'grey')
 				b.barChart('preg4.png', pycha.bar.VerticalBarChart)
-				
+
 				break
 		#	print bots
 if __name__ == '__main__': polariza()
