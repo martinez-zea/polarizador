@@ -30,13 +30,12 @@
 
 
 
-import sqlite3
-import os
 import datetime
 import serial
-import sys
-import time
 import random as r
+import pygame
+from pygame.locals import *
+
 #import pycha
 #import pycha.bar
 #import pycha.pie
@@ -44,14 +43,22 @@ import random as r
 #import imprimeTicket
 import habla
 import peticion
+import visualizador
 #import tortas
 #import barras
 
 h = habla.habla()
 #m = imprimeTicket.imprimeTicket()
 p = peticion.Peticion()
+v = visualizador.Visualizador(engine='Agg')
 #t = tortas.tortas()
 #b = barras.barras()
+
+width = 1024
+height = 768
+
+size = width, height
+
 
 quienId = 0
 
@@ -110,6 +117,20 @@ def bar_reader():
 def polariza():
 	while 1:
 		elPola()	
+
+		#actualiza la visualizacion
+		v.todo()
+		sc = pygame.display.set_mode((size), FULLSCREEN, 32)
+		back = pygame.Surface(sc.get_size())
+		back = back.convert()
+		back.fill((255, 255, 255))
+		sc.blit(back, (0, 0))
+		sc.blit(back, (0, 0))
+		img = pygame.image.load('todo.png')
+		sc.blit(img, (0, 0))
+		pygame.display.flip()
+		print "displayed" 
+
 		barcode = bar_reader()
 		
 		other_interactions = p.buscaAnteriores(int(barcode))
