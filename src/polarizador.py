@@ -48,7 +48,7 @@ logging.basicConfig(level = logging.DEBUG,
 		 format = '(%(threadName)-10s) %(message)s',)
 
 #serial ports (QuitoVersion)
-lcd_port = '/dev/ttyACM1'
+LCD = '/dev/ttyACM1'
 BARCODE_READER = '/dev/ttyACM0'
 BUTTONS = '/dev/ttyUSB0'
 
@@ -74,7 +74,7 @@ SENTENCES = {
 		}
 
 class UserInteraction(Thread):
-	def __init__(self, userCode):
+	def __init__(self, userCode, lcdThread):
 		Thread.__init__(self)
 		self.name = 'UserInteraction'
 		self.dataBase = Peticion()
@@ -82,6 +82,7 @@ class UserInteraction(Thread):
 		self.printer = imprimeTicket()
 		self.userCode = userCode
 		self.infoGraph = Visualizador(engine='Agg')
+		self.lcd = lcdThread
 		
 		logging.debug('User interaction started')
 
@@ -101,13 +102,17 @@ class UserInteraction(Thread):
 
 		question = randint(1,3)
 		if question == 1:
+			self.lcd.write('1')
 			self.txt2spch.que(QUESTIONS['q1'])
 		elif question == 2:
+			self.lcd.write('2')
 			self.txt2spch.que(QUESTIONS['q2'])
 		elif question == 3:
+			self.lcd.write('3')
 			self.txt2spch.que(QUESTIONS['q3'])
 
 		buttons = Serial(BUTTONS, 9600, timeout=None)
+		self.lcd.write('4')
 		self.txt2spch.que(SENTENCES['push'])
 		answer = buttons.readline()
 		buttons.close()
@@ -128,10 +133,13 @@ class UserInteraction(Thread):
 					"de acuerdo",
 					str(previuosVisits), 
 					question)
+			
 			self.infoGraph.todo()
+			
+			self.lcd.write('5')
 			self.txt2spch.que(SENTENCES['thanks'])
 			self.txt2spch.que(SENTENCES['ami'])
-
+			self.lcd.write('6')
 		
 		if int(answer) == 1:
 			self.dataBase.guardaRespuesta(self.userCode,question,"no",time,now)
@@ -144,9 +152,14 @@ class UserInteraction(Thread):
 					"de acuerdo",
 					str(previuosVisits), 
 					question)
+			
 			self.infoGraph.todo()
+			
+			self.lcd.write('5')
 			self.txt2spch.que(SENTENCES['thanks'])
 			self.txt2spch.que(SENTENCES['ami'])
+			self.lcd.write('6')
+
 
 class Speech(Thread):
 	def __init__(self):
@@ -194,6 +207,25 @@ class Render(Thread):
 	def quit(self):
 		self.loop.set()
 
+class LcdWriter(Thread):
+	def __init__(self):
+		Thread.__init__(self)
+		self.name = 'LcdWriter'
+		self.lcd = Serial(LCD, 9600, timeout=None)
+		self.loop = Event()
+
+	def run(self):
+		while not self.loop.is_set():
+			self.loop.wait(0.1)
+
+	def write(self,msg):
+		self.lcd.write(msg)
+		logging.debug('lcd msg: %s',msg)
+	
+	def quit(self):
+		self.lcd.close()
+		self.loop.set()
+
 def main():
 	try:
 		reader =  Serial(BARCODE_READER, BAUD_RATE, timeout=None)
@@ -203,15 +235,19 @@ def main():
 		speech.start()
 		speech.helloWorld()
 		
-		viz = Render()
-		viz.start()
+		lcd = LcdWriter()
+		lcd.start()
+		lcd.write('6')
+
+		#viz = Render()
+		#viz.start()
 
 		while True:
 			code = reader.readline()
 
 			if code is not None:
 				logging.debug('barcode: %s', code)
-				interact = UserInteraction(code)
+				interact = UserInteraction(code,lcd)
 				interact.run()
 				code = None
 
@@ -226,8 +262,10 @@ def main():
 		speech.quit()
 		speech.join()
 
-		viz.quit()
-		viz.join()
+		#viz.quit()
+		#viz.join()
+		lcd.quit()
+		lcd.join()
 
 		sys.exit(1)
 
