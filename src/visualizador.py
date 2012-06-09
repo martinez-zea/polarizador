@@ -107,4 +107,4 @@ class Visualizador:
     self.plot.yticks(self.np.arange(0, total, 10))
     #self.plot.ylabel('Preguntas')
     self.plot.savefig('todo.png')	
-    self.plot.show()
+    #self.plot.show()

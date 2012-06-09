@@ -28,18 +28,20 @@
 
 import sys
 import datetime
+import logging
 from time import sleep
 from random import randint
-from  serial import Serial
-import logging
 from threading import Thread, Event, Lock
+
+import pygame
+from  serial import Serial
 
 #polarizador modules
 from habla import habla
 from peticion import Peticion
 from imprimeTicket import imprimeTicket
+from visualizador import Visualizador
 
-#TODO: import visualizador
 
 #Logging configuration
 logging.basicConfig(level = logging.DEBUG,
@@ -59,6 +61,8 @@ QUESTIONS = {
 		}
 
 SENTENCES = {
+		'ami' : 'soy el polarizador',
+		'identify' : 'identifiquese usando su codigo de barras',
 		'firstTime': 'Esta es la primera vez que me visita',
 		'previous' : 'Usted me ha visitado',
 		'oneTime' : 'vez',
@@ -66,6 +70,7 @@ SENTENCES = {
 		'push': 'Presione un boton para responder la pregunta',
 		'opposite': 'Usted respondio lo contrario al visitante',
 		'printing': 'imprimiendo',
+		'thanks': 'Gracias por usarme',
 		}
 
 class UserInteraction(Thread):
@@ -76,6 +81,9 @@ class UserInteraction(Thread):
 		self.txt2spch = habla()
 		self.printer = imprimeTicket()
 		self.userCode = userCode
+		self.infoGraph = Visualizador(engine='Agg')
+		
+		logging.debug('User interaction started')
 
 	def run(self):
 		previuosVisits = self.dataBase.buscaAnteriores(int(self.userCode))
@@ -120,6 +128,10 @@ class UserInteraction(Thread):
 					"de acuerdo",
 					str(previuosVisits), 
 					question)
+			self.infoGraph.todo()
+			self.txt2spch.que(SENTENCES['thanks'])
+			self.txt2spch.que(SENTENCES['ami'])
+
 		
 		if int(answer) == 1:
 			self.dataBase.guardaRespuesta(self.userCode,question,"no",time,now)
@@ -132,33 +144,9 @@ class UserInteraction(Thread):
 					"de acuerdo",
 					str(previuosVisits), 
 					question)
-
-class BarcodeReader(Thread):
-	def __init__(self, serialPort, baudRate):
-		Thread.__init__(self)
-		self.name = 'BarcodeReader'
-		self.reader = Serial(BARCODE_READER, BAUD_RATE, timeout=None)
-		self.loop = Event()
-		self.gotCode = False
-		
-		logging.debug('barcode thread initialized')
-
-	def run(self):
-		while not self.loop.is_set():
-			self.gotCode = False
-			code = self.reader.readline()
-			self.gotCode = True
-			
-			interact = UserInteraction(code)
-			interact.run()
-
-			logging.debug('barcode: %s',code)
-
-			self.loop.wait(0.01)
-
-	def quit(self):
-		self.reader.close()
-		self.loop.set()
+			self.infoGraph.todo()
+			self.txt2spch.que(SENTENCES['thanks'])
+			self.txt2spch.que(SENTENCES['ami'])
 
 class Speech(Thread):
 	def __init__(self):
@@ -170,39 +158,76 @@ class Speech(Thread):
 
 	def run(self):
 		while not self.loop.is_set():
-			print 'work on me!!'
+			#print 'work on me!!'
 			self.loop.wait(1)
 
 	def helloWorld(self):
 		logging.debug('helloWorld')
 
-		self.txt2spch.que('Soy el polarizador')
-		self.txt2spch.que('Identifiquese usando su codigo de barras')
+		self.txt2spch.que(SENTENCES['ami'])
+		self.txt2spch.que(SENTENCES['identify'])
+
+	def quit(self):
+		self.loop.set()
+
+class Render(Thread):
+	def __init__(self):
+		Thread.__init__(self)
+		self.name = 'Render'
+		self.loop = Event()
+		
+		width = 1024
+		height = 768
+		pygame.init()
+		self.screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN, 32)
+
+		logging.debug('Render thread initialized')
+
+	def run(self):
+		while not self.loop.is_set():
+			img = pygame.image.load('todo.png').convert()
+			self.screen.blit(img, (0, 0))
+			pygame.display.flip()
+			
+			self.loop.wait(1)
 
 	def quit(self):
 		self.loop.set()
 
 def main():
 	try:
-		barReader = BarcodeReader(BARCODE_READER,BAUD_RATE)
-		barReader.start()
+		reader =  Serial(BARCODE_READER, BAUD_RATE, timeout=None)
+		code = None
 		
 		speech = Speech()
 		speech.start()
 		speech.helloWorld()
+		
+		viz = Render()
+		viz.start()
 
 		while True:
+			code = reader.readline()
+
+			if code is not None:
+				logging.debug('barcode: %s', code)
+				interact = UserInteraction(code)
+				interact.run()
+				code = None
+
 			sleep(0.01)
 	
 	except KeyboardInterrupt:
 		"""
 		End threads and exit main program
 		"""
-		barReader.quit()
-		barReader.join()
+		reader.close()
 		
 		speech.quit()
 		speech.join()
+
+		viz.quit()
+		viz.join()
 
 		sys.exit(1)
 
