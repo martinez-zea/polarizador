@@ -50,7 +50,7 @@ void setup(){
   Serial.begin(9600);
   
   //inicial el lcd
-  lcd.begin(0,2);
+  lcd.begin(16,2);
   //escribeSaludo();
 }
 
@@ -63,20 +63,24 @@ void escribeSaludo(){
   String codigo = "codigo de barras   ";
 
   lcd.clear();
-  writeToScreen(0, soy);
-  writeToScreen(1, elPola);
+  lcd.setCursor(0,0);
+  lcd.print(soy);
+  lcd.setCursor(0,1);
+  lcd.print(elPola);
   scroll();  
   
   lcd.clear();
-  writeToScreen(0, identifiquese);
-  writeToScreen(1, usando);
+  lcd.setCursor(0,0);
+  lcd.print(identifiquese);
+  lcd.setCursor(0,1);
+  lcd.print(usando);
   scroll();
   
   lcd.clear();
-  writeToScreen(0, codigo);
+  lcd.setCursor(0,0);
+  lcd.print(codigo);
   scroll();
 }
-
 
 void preguntaUno(){
   String conciencia = "La conciencia de    ";
@@ -86,8 +90,10 @@ void preguntaUno(){
   String seguridad = "seguridad?    ";
 
   lcd.clear();
-  writeToScreen(0, conciencia);
-  writeToScreen(1, ser);
+  lcd.setCursor(0,0);
+  lcd.print(conciencia);
+  lcd.setCursor(0,1);
+  lcd.print(ser);
   scroll();
 
   lcd.clear();
@@ -155,24 +161,18 @@ void writeToScreen(int line, String sentence){
 }
 
 void scroll(){
-  unsigned long cM = millis();
-   
-  //int counter2 = 0;
-  if(counter2 < 17){
-    unsigned long currentMillis = millis();
-    if(currentMillis - previousMillisScrl > scrollChar){
-      previousMillisScrl = currentMillis;  
-      lcd.scrollDisplayLeft();
-      counter2++;
-    }
-  } else {
-    counter2 =0;
-  } 
+ for (int positionCounter = 0; positionCounter < 13; positionCounter++) {
+    // scroll one position left:
+    lcd.scrollDisplayLeft(); 
+    // wait a bit:
+    delay(150);
+  }
 }
 
 void loop(){
   escribeSaludo();
-  
+
+/*  
   if (Serial.available() > 0) {
       Serial.println(Serial.read());
         mandaPython = Serial.read();
@@ -187,5 +187,5 @@ void loop(){
   } else {
     escribeSaludo();
   }
- 
+ */
 }
