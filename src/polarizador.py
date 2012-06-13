@@ -31,7 +31,7 @@ import datetime
 import logging
 from time import sleep
 from random import randint
-from threading import Thread, Event, Lock
+from threading import Thread, Event, Lock, enumerate
 
 import pygame
 from  serial import Serial
@@ -61,7 +61,7 @@ QUESTIONS = {
 		}
 
 SENTENCES = {
-		'ami' : 'soy el polarizador',
+		'whoami' : 'soy el polarizador',
 		'identify' : 'identifiquese usando su codigo de barras',
 		'firstTime': 'Esta es la primera vez que me visita',
 		'previous' : 'Usted me ha visitado',
@@ -73,8 +73,10 @@ SENTENCES = {
 		'thanks': 'Gracias por usarme',
 		}
 
+onInteraction = False
+
 class UserInteraction(Thread):
-	def __init__(self, userCode, lcdThread):
+	def __init__(self, userCode, lcdThread, speechThread):
 		Thread.__init__(self)
 		self.name = 'UserInteraction'
 		self.dataBase = Peticion()
@@ -83,15 +85,17 @@ class UserInteraction(Thread):
 		self.userCode = userCode
 		self.infoGraph = Visualizador(engine='Agg')
 		self.lcd = lcdThread
+		self.speech = speechThread
 		
 		logging.debug('User interaction started')
 
 	def run(self):
+		self.speech.waiting = True
 		previuosVisits = self.dataBase.buscaAnteriores(int(self.userCode))
 		logging.debug('previous visits: %s',previuosVisits)
 
 		if previuosVisits == 0:
-			self.txt2spch.que(SENTENCES['firstNime'])
+			self.txt2spch.que(SENTENCES['firstTime'])
 		elif previuosVisits >0 :
 			self.txt2spch.que(SENTENCES['previous'])
 			self.txt2spch.que(str(previuosVisits))
@@ -138,8 +142,10 @@ class UserInteraction(Thread):
 			
 			self.lcd.write('5')
 			self.txt2spch.que(SENTENCES['thanks'])
-			self.txt2spch.que(SENTENCES['ami'])
+			#self.txt2spch.que(SENTENCES['whoami'])
 			self.lcd.write('6')
+			
+			self.speech.waiting = False
 		
 		if int(answer) == 1:
 			self.dataBase.guardaRespuesta(self.userCode,question,"no",time,now)
@@ -147,7 +153,7 @@ class UserInteraction(Thread):
 			self.txt2spch.que(SENTENCES['opposite'])
 			self.txt2spch.que(opposite)
 			self.txt2spch.que(SENTENCES['printing'])
-			self.printer.imp(self.userCode,"SI",
+			self.printer.imp(self.userCode,"NO",
 					str(self.dataBase.buscaPares(question,"si")),
 					"de acuerdo",
 					str(previuosVisits), 
@@ -157,8 +163,10 @@ class UserInteraction(Thread):
 			
 			self.lcd.write('5')
 			self.txt2spch.que(SENTENCES['thanks'])
-			self.txt2spch.que(SENTENCES['ami'])
+			#self.txt2spch.que(SENTENCES['whoami'])
 			self.lcd.write('6')
+
+			self.speech.waiting = False
 
 
 class Speech(Thread):
@@ -167,17 +175,24 @@ class Speech(Thread):
 		self.name = 'Speech'
 		self.loop = Event()
 		self.txt2spch = habla()
+		self.waiting = False
 		logging.debug('Speech thread initialized')
+
 
 	def run(self):
 		while not self.loop.is_set():
-			#print 'work on me!!'
-			self.loop.wait(1)
+			if not self.waiting:
+				#logging.debug('--- onWaiting')
+				self.helloWorld()
+				self.loop.wait(randint(30,90))
+			else:
+				#logging.debug('*** on')
+				self.loop.wait(0.01)
 
 	def helloWorld(self):
 		logging.debug('helloWorld')
 
-		self.txt2spch.que(SENTENCES['ami'])
+		self.txt2spch.que(SENTENCES['whoami'])
 		self.txt2spch.que(SENTENCES['identify'])
 
 	def quit(self):
@@ -193,6 +208,7 @@ class Render(Thread):
 		height = 768
 		pygame.init()
 		self.screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN, 32)
+		#self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE, 32)
 
 		logging.debug('Render thread initialized')
 
@@ -201,8 +217,7 @@ class Render(Thread):
 			img = pygame.image.load('todo.png').convert()
 			self.screen.blit(img, (0, 0))
 			pygame.display.flip()
-			
-			self.loop.wait(1)
+			self.loop.wait(2)
 
 	def quit(self):
 		self.loop.set()
@@ -233,21 +248,22 @@ def main():
 		
 		speech = Speech()
 		speech.start()
-		speech.helloWorld()
+		#speech.helloWorld()
 		
 		lcd = LcdWriter()
 		lcd.start()
 		lcd.write('6')
 
-		#viz = Render()
-		#viz.start()
+		viz = Render()
+		viz.start()
 
 		while True:
 			code = reader.readline()
-
+			onInteraction = False
 			if code is not None:
+				onInteraction = True
 				logging.debug('barcode: %s', code)
-				interact = UserInteraction(code,lcd)
+				interact = UserInteraction(code,lcd,speech)
 				interact.run()
 				code = None
 
@@ -261,9 +277,8 @@ def main():
 		
 		speech.quit()
 		speech.join()
-
-		#viz.quit()
-		#viz.join()
+		viz.quit()
+		viz.join()
 		lcd.quit()
 		lcd.join()
 

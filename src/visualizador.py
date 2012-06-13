@@ -78,7 +78,7 @@ class Visualizador:
     self.plot.show()
 
   def todo(self):
-    f = self.plot.figure(figsize = (10.24, 6.2))
+    f = self.plot.figure(figsize = (10.24, 7.68))
     #self.plot.figure(figsize = (10.24, 7.68))
     self.plot.subplot(231)		
     tit = 'La conciencia de ser observado \n aumenta su sensacion de seguridad ?'
@@ -102,7 +102,7 @@ class Visualizador:
     total = self.pet.cuantUsers()	
     pregs = [total, self.pet.cuantPregs(1), self.pet.cuantPregs(2), self.pet.cuantPregs(3)]
     self.plot.bar(self.np.arange(4), pregs, width = 0.5, color='k', align = 'center')
-    self.plot.xticks([0, 1, 2, 3], ('Total \n pregs', 'preg \n # uno', 'preg \n # dos', 'preg \n # tres'))	
+    self.plot.xticks([0, 1, 2, 3], ('Total', 'preg. uno', 'preg. dos', 'preg. tres'))	
     
     self.plot.yticks(self.np.arange(0, total, 10))
     #self.plot.ylabel('Preguntas')
