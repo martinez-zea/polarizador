@@ -63,6 +63,7 @@ QUESTIONS = {
 SENTENCES = {
 		'whoami' : 'soy el polarizador',
 		'identify' : 'identifiquese usando su codigo de barras',
+		'answer' : 'Responda la siguiente pregunta',
 		'firstTime': 'Esta es la primera vez que me visita',
 		'previous' : 'Usted me ha visitado',
 		'oneTime' : 'vez',
@@ -70,6 +71,7 @@ SENTENCES = {
 		'push': 'Presione un boton para responder la pregunta',
 		'opposite': 'Usted respondio lo contrario al visitante',
 		'printing': 'imprimiendo',
+        'ticket':'Retire su recibo',
 		'thanks': 'Gracias por usarme',
 		}
 
@@ -85,7 +87,7 @@ class GraphGenerator(Thread):
         self.engine.todo()
 
 class UserInteraction(Thread):
-    def __init__(self, userCode, lcdThread, speechThread):
+    def __init__(self, userCode, lcdThread, speechThread, graphThread):
         Thread.__init__(self)
         self.name = 'UserInteraction'
         self.dataBase = Peticion()
@@ -93,7 +95,7 @@ class UserInteraction(Thread):
         self.printer = imprimeTicket()
         self.userCode = userCode
         #self.infoGraph = Visualizador(engine='Agg')
-        self.infoGraph = GraphGenerator()
+        self.infoGraph = graphThread
         self.lcd = lcdThread
         self.speech = speechThread
 		
@@ -113,6 +115,9 @@ class UserInteraction(Thread):
                 self.txt2spch.que(SENTENCES['oneTime'])
             else:
                 self.txt2spch.que(SENTENCES['many'])
+		sleep(3)		
+		self.txt2spch.que(SENTENCES['answer'])
+		sleep(3)
 
 		question = randint(1,3)
 		if question == 1:
@@ -124,6 +129,8 @@ class UserInteraction(Thread):
 		elif question == 3:
 			self.lcd.write('3')
 			self.txt2spch.que(QUESTIONS['q3'])
+		
+		sleep(3)
 
         buttons = Serial(BUTTONS, 9600, timeout=None)
         self.lcd.write('4')
@@ -152,10 +159,13 @@ class UserInteraction(Thread):
             self.infoGraph.run()
 
             self.lcd.write('5')
+            self.txt2spch.que(SENTENCES['ticket'])
+            sleep(3)
             self.txt2spch.que(SENTENCES['thanks'])
-			#self.txt2spch.que(SENTENCES['whoami'])
+
             self.lcd.write('6')
 			
+            sleep(5)
             self.speech.waiting = False
 		
         if int(answer) == 1:
@@ -174,12 +184,14 @@ class UserInteraction(Thread):
             self.infoGraph.run()
 			
             self.lcd.write('5')
+            self.txt2spch.que(SENTENCES['ticket'])
+            sleep(3)
             self.txt2spch.que(SENTENCES['thanks'])
 			#self.txt2spch.que(SENTENCES['whoami'])
             self.lcd.write('6')
-
+            
+            sleep(5)
             self.speech.waiting = False
-
 
 class Speech(Thread):
 	def __init__(self):
@@ -265,6 +277,8 @@ def main():
 		lcd = LcdWriter()
 		lcd.start()
 		lcd.write('6')
+		
+		graph = GraphGenerator()
 
 		viz = Render()
 		viz.start()
@@ -273,7 +287,7 @@ def main():
 			code = reader.readline()
 			if code is not None:
 				logging.debug('barcode: %s', code)
-				interact = UserInteraction(code,lcd,speech)
+				interact = UserInteraction(code,lcd,speech,graph)
 				interact.run()
 				code = None
 
@@ -287,6 +301,8 @@ def main():
 		
 		speech.quit()
 		speech.join()
+		graph.quit()
+		grapht.join()
 		viz.quit()
 		viz.join()
 		lcd.quit()
