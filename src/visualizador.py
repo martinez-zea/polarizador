@@ -1,6 +1,7 @@
-#!/usr/bin/python
-import sys
+#!/usr/bin/python2
 from peticion import Peticion
+import matplotlib.pyplot as plt
+import numpy
 
 class Visualizador:
 
@@ -13,39 +14,7 @@ class Visualizador:
     Instancia la clase, intancia los objetos necesarios 
 
     """
-
-    """
-    ### carga y descarga dinamica de matplotlib, para cambiar de backend, no funciona 
-
-    try: 
-      sys.modules["matplotlib"]
-      del sys.modules["matplotlib"]
-      #del plt
-      #del matplotlib
-      print 'matplotlib removido'
-
-      import matplotlib
-      matplotlib.use(engine)
-      import matplotlib.pyplot
-      print 'matplotlib recargado'
-
-    except KeyError:
-
-      import matplotlib
-      matplotlib.use(engine)
-      import matplotlib.pyplot
-      print 'matplotlb cargado'
-    """
-    import matplotlib
-    matplotlib.use(engine)
-    import matplotlib.pyplot
-    import numpy
-    #import matplotlib.figure
-    #import matplotlib.axes
-
-
-
-    self.plot = matplotlib.pyplot	
+    self.plot = plt	
     self.pet = Peticion()
     self.np = numpy
 
@@ -78,14 +47,13 @@ class Visualizador:
     self.plot.show()
 
   def todo(self):
-    f = self.plot.figure(figsize = (10.24, 7.68))
-    #self.plot.figure(figsize = (10.24, 7.68))
+    #f = self.plot.figure(figsize = (10.24, 7.68))
+    self.plot.figure(figsize = (10.24, 7.68))
     self.plot.subplot(231)		
     tit = 'La conciencia de ser observado \n aumenta su sensacion de seguridad ?'
-    self.plot.title(tit, fontsize = 10)	
-	
+    self.plot.title(tit, fontsize = 10)
     self.plot.pie(self.pet.resPorPreg(1), colors=('k', 'w'), labels=('si', 'no'), labeldistance = 1.2)
-
+    
     self.plot.subplot(232)
     tit = 'Estar en una base de datos \n es pertenecer a una comunidad ?'
     self.plot.title(tit, fontsize = 10)
