@@ -9,7 +9,7 @@ class Visualizador:
   API de visualizacion del polarizador, usa matplotlib y peticion
   """
 
-  def __init__(self, engine='GTKAgg'):
+  def __init__(self):
     """
     Instancia la clase, intancia los objetos necesarios 
 

@@ -31,7 +31,7 @@ import datetime
 import logging
 from time import sleep
 from random import randint
-from threading import Thread, Event, Lock, enumerate
+from threading import Thread, Event
 
 import pygame
 from  serial import Serial
@@ -73,36 +73,46 @@ SENTENCES = {
 		'thanks': 'Gracias por usarme',
 		}
 
-onInteraction = False
+class GraphGenerator(Thread):
+    def __init__(self):
+        Thread.__init__(self)
+        self.name = 'GraphGenerator'
+        self.engine = Visualizador()
+        
+        logging.debug('GraphGenerator started')
+        
+    def run(self):
+        self.engine.todo()
 
 class UserInteraction(Thread):
-	def __init__(self, userCode, lcdThread, speechThread):
-		Thread.__init__(self)
-		self.name = 'UserInteraction'
-		self.dataBase = Peticion()
-		self.txt2spch = habla()
-		self.printer = imprimeTicket()
-		self.userCode = userCode
-		self.infoGraph = Visualizador(engine='Agg')
-		self.lcd = lcdThread
-		self.speech = speechThread
+    def __init__(self, userCode, lcdThread, speechThread):
+        Thread.__init__(self)
+        self.name = 'UserInteraction'
+        self.dataBase = Peticion()
+        self.txt2spch = habla()
+        self.printer = imprimeTicket()
+        self.userCode = userCode
+        #self.infoGraph = Visualizador(engine='Agg')
+        self.infoGraph = GraphGenerator()
+        self.lcd = lcdThread
+        self.speech = speechThread
 		
-		logging.debug('User interaction started')
+        logging.debug('User interaction started')
 
-	def run(self):
-		self.speech.waiting = True
-		previuosVisits = self.dataBase.buscaAnteriores(int(self.userCode))
-		logging.debug('previous visits: %s',previuosVisits)
+    def run(self):
+        self.speech.waiting = True
+        previuosVisits = self.dataBase.buscaAnteriores(int(self.userCode))
+        logging.debug('previous visits: %s',previuosVisits)
 
-		if previuosVisits == 0:
-			self.txt2spch.que(SENTENCES['firstTime'])
-		elif previuosVisits >0 :
-			self.txt2spch.que(SENTENCES['previous'])
-			self.txt2spch.que(str(previuosVisits))
-			if previuosVisits == 1:
-				self.txt2spch.que(SENTENCES['oneTime'])
-			else:
-				self.txt2spch.que(SENTENCES['many'])
+        if previuosVisits == 0:
+            self.txt2spch.que(SENTENCES['firstTime'])
+        elif previuosVisits >0 :
+            self.txt2spch.que(SENTENCES['previous'])
+            self.txt2spch.que(str(previuosVisits))
+            if previuosVisits == 1:
+                self.txt2spch.que(SENTENCES['oneTime'])
+            else:
+                self.txt2spch.que(SENTENCES['many'])
 
 		question = randint(1,3)
 		if question == 1:
@@ -115,58 +125,60 @@ class UserInteraction(Thread):
 			self.lcd.write('3')
 			self.txt2spch.que(QUESTIONS['q3'])
 
-		buttons = Serial(BUTTONS, 9600, timeout=None)
-		self.lcd.write('4')
-		self.txt2spch.que(SENTENCES['push'])
-		answer = buttons.readline()
-		buttons.close()
-		logging.debug('answer: %s',answer)
+        buttons = Serial(BUTTONS, 9600, timeout=None)
+        self.lcd.write('4')
+        self.txt2spch.que(SENTENCES['push'])
+        answer = buttons.readline()
+        buttons.close()
+        logging.debug('answer: %s',answer)
 
-		now = datetime.datetime.now()
-		date = now.strftime("%Y/%m/%d")
-		time = now.strftime("%H:%M:%S")
+        now = datetime.datetime.now()
+        date = now.strftime("%Y/%m/%d")
+        time = now.strftime("%H:%M:%S")
 		
-		if int(answer) == 2:
-			self.dataBase.guardaRespuesta(self.userCode,question,"si",time,now)
-			opposite = self.dataBase.buscaRespuesta(question, "no")
-			self.txt2spch.que(SENTENCES['opposite'])
-			self.txt2spch.que(opposite)
-			self.txt2spch.que(SENTENCES['printing'])
-			self.printer.imp(self.userCode,"SI",
+        if int(answer) == 2:
+            self.dataBase.guardaRespuesta(self.userCode,question,"si",time,now)
+            opposite = self.dataBase.buscaRespuesta(question, "no")
+            self.txt2spch.que(SENTENCES['opposite'])
+            self.txt2spch.que(opposite)
+            self.txt2spch.que(SENTENCES['printing'])
+            self.printer.imp(self.userCode,"SI",
 					str(self.dataBase.buscaPares(question,"si")),
 					"de acuerdo",
 					str(previuosVisits), 
 					question)
 			
-			self.infoGraph.todo()
-			
-			self.lcd.write('5')
-			self.txt2spch.que(SENTENCES['thanks'])
+			#self.infoGraph.todo()
+            self.infoGraph.run()
+
+            self.lcd.write('5')
+            self.txt2spch.que(SENTENCES['thanks'])
 			#self.txt2spch.que(SENTENCES['whoami'])
-			self.lcd.write('6')
+            self.lcd.write('6')
 			
-			self.speech.waiting = False
+            self.speech.waiting = False
 		
-		if int(answer) == 1:
-			self.dataBase.guardaRespuesta(self.userCode,question,"no",time,now)
-			opposite = self.dataBase.buscaRespuesta(question, "si")
-			self.txt2spch.que(SENTENCES['opposite'])
-			self.txt2spch.que(opposite)
-			self.txt2spch.que(SENTENCES['printing'])
-			self.printer.imp(self.userCode,"NO",
+        if int(answer) == 1:
+            self.dataBase.guardaRespuesta(self.userCode,question,"no",time,now)
+            opposite = self.dataBase.buscaRespuesta(question, "si")
+            self.txt2spch.que(SENTENCES['opposite'])
+            self.txt2spch.que(opposite)
+            self.txt2spch.que(SENTENCES['printing'])
+            self.printer.imp(self.userCode,"NO",
 					str(self.dataBase.buscaPares(question,"si")),
 					"de acuerdo",
 					str(previuosVisits), 
 					question)
-			
-			self.infoGraph.todo()
-			
-			self.lcd.write('5')
-			self.txt2spch.que(SENTENCES['thanks'])
-			#self.txt2spch.que(SENTENCES['whoami'])
-			self.lcd.write('6')
 
-			self.speech.waiting = False
+            #self.infoGraph.todo()
+            self.infoGraph.run()
+			
+            self.lcd.write('5')
+            self.txt2spch.que(SENTENCES['thanks'])
+			#self.txt2spch.que(SENTENCES['whoami'])
+            self.lcd.write('6')
+
+            self.speech.waiting = False
 
 
 class Speech(Thread):
@@ -259,9 +271,7 @@ def main():
 
 		while True:
 			code = reader.readline()
-			onInteraction = False
 			if code is not None:
-				onInteraction = True
 				logging.debug('barcode: %s', code)
 				interact = UserInteraction(code,lcd,speech)
 				interact.run()
