@@ -119,18 +119,18 @@ class UserInteraction(Thread):
         self.txt2spch.que(SENTENCES['answer'])
         sleep(3)
 
-		question = randint(1,3)
-		if question == 1:
+        question = randint(1,3)
+        if question == 1:
 			self.lcd.write('1')
 			self.txt2spch.que(QUESTIONS['q1'])
-		elif question == 2:
+        elif question == 2:
 			self.lcd.write('2')
 			self.txt2spch.que(QUESTIONS['q2'])
-		elif question == 3:
+        elif question == 3:
 			self.lcd.write('3')
 			self.txt2spch.que(QUESTIONS['q3'])
 		
-		sleep(3)
+        sleep(3)
 
         buttons = Serial(BUTTONS, 9600, timeout=None)
         self.lcd.write('4')
