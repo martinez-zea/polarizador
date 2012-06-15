@@ -1,0 +1,9 @@
+BEGIN TRANSACTION;
+CREATE TABLE responde (ID INTEGER PRIMARY KEY, quien NUMERIC, pregunta TEXT, respuesta TEXT, hora TEXT, fecha TEXT);
+INSERT INTO responde VALUES(1,1,1,'no','05:43:09','25/06/2008');
+INSERT INTO responde VALUES(2,1,1,'si','05:44:09','26/06/2008');
+INSERT INTO responde VALUES(3,1,2,'no','05:45:09','27/06/2008');
+INSERT INTO responde VALUES(4,1,2,'si','05:46:09','28/06/2008');
+INSERT INTO responde VALUES(5,1,3,'no','05:47:09','29/06/2008');
+INSERT INTO responde VALUES(6,1,3,'si','05:48:09','15/06/2008');
+COMMIT;
