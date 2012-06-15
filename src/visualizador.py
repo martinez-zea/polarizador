@@ -49,19 +49,19 @@ class Visualizador:
   def todo(self):
     #f = self.plot.figure(figsize = (10.24, 7.68))
     self.plot.figure(figsize = (10.24, 7.68))
-    self.plot.subplot(231)		
-    tit = 'La conciencia de ser observado \n aumenta su sensacion de seguridad ?'
-    self.plot.title(tit, fontsize = 10)
+    self.plot.subplot(231)
+    tit = 'Cree usted que los medios de comunicacion \n son opositores al gobierno?'
+    self.plot.title(tit, fontsize = 9)
     self.plot.pie(self.pet.resPorPreg(1), colors=('k', 'w'), labels=('si', 'no'), labeldistance = 1.2)
     
     self.plot.subplot(232)
-    tit = 'Estar en una base de datos \n es pertenecer a una comunidad ?'
-    self.plot.title(tit, fontsize = 10)
+    tit = 'Cree usted que el arte en el Ecuador \n debe estar ligado a la labor social?'
+    self.plot.title(tit, fontsize = 9)
     self.plot.pie(self.pet.resPorPreg(2), colors=('k', 'w'), labels=('si', 'no'), labeldistance = 1.2)
 
     self.plot.subplot(233)
     tit = 'Deberia usted tener acceso \n a la informacion de otros ?'
-    self.plot.title(tit, fontsize = 10)
+    self.plot.title(tit, fontsize = 9)
     self.plot.pie(self.pet.resPorPreg(3), colors=('k', 'w'), labels=('si', 'no'), labeldistance = 1.2)
     #self.plot.figure(2)
     self.plot.subplot(234)

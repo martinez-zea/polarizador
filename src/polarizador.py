@@ -55,9 +55,9 @@ BUTTONS = '/dev/ttyUSB0'
 BAUD_RATE = 9600
 
 QUESTIONS = {
-		'q1': 'La conciencia de ser observado, aumenta su sensacion de seguridad?',
-		'q2': 'Estar en una base de datos, es pertenecer a una comunidad?',
-		'q3': 'Deberia usted tener acceso, a la informacion de otros?',
+		'q1': 'Cree usted que los medios de comunicacion son opositores al gobierno?',
+		'q2': 'Cree usted que el arte en el Ecuador debe estar ligado a la labor social?',
+		'q3': 'El arte bla?',
 		}
 
 SENTENCES = {
