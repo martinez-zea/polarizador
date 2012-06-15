@@ -57,7 +57,7 @@ BAUD_RATE = 9600
 QUESTIONS = {
 		'q1': 'Cree usted que los medios de comunicacion son opositores al gobierno?',
 		'q2': 'Cree usted que el arte en el Ecuador debe estar ligado a la labor social?',
-		'q3': 'El arte bla?',
+		'q3': 'Su voz tiene participacion dentro de los conflictos de comunicacion del pais?',
 		}
 
 SENTENCES = {
@@ -115,9 +115,9 @@ class UserInteraction(Thread):
                 self.txt2spch.que(SENTENCES['oneTime'])
             else:
                 self.txt2spch.que(SENTENCES['many'])
-		sleep(3)		
-		self.txt2spch.que(SENTENCES['answer'])
-		sleep(3)
+        sleep(3)		
+        self.txt2spch.que(SENTENCES['answer'])
+        sleep(3)
 
 		question = randint(1,3)
 		if question == 1:
@@ -231,8 +231,8 @@ class Render(Thread):
 		width = 1024
 		height = 768
 		pygame.init()
-		self.screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN, 32)
-		#self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE, 32)
+		#self.screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN, 32)
+		self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE, 32)
 
 		logging.debug('Render thread initialized')
 

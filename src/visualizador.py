@@ -60,7 +60,7 @@ class Visualizador:
     self.plot.pie(self.pet.resPorPreg(2), colors=('k', 'w'), labels=('si', 'no'), labeldistance = 1.2)
 
     self.plot.subplot(233)
-    tit = 'Deberia usted tener acceso \n a la informacion de otros ?'
+    tit = 'Su voz tiene participacion dentro\n de los conflictos de comunicacion del pais?'
     self.plot.title(tit, fontsize = 9)
     self.plot.pie(self.pet.resPorPreg(3), colors=('k', 'w'), labels=('si', 'no'), labeldistance = 1.2)
     #self.plot.figure(2)
